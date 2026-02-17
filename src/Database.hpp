@@ -35,9 +35,9 @@ public:
 
   ~Database();
 
-  static void addEntry(Entry entry);
+  void addEntry(Entry entry);
 
-  static void removeEntry(uint32_t entryID);
+  void removeEntry(uint32_t entryID);
 
 
 private:
