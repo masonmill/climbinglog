@@ -12,31 +12,43 @@ using json = nlohmann::json;
 static std::string boardToString(const Board board) {
   switch (board) {
     case MB2019:
-      return "MB2019";
+      return "MoonBoard 2019";
+    case MB2024:
+      return "MoonBoard 2024";
     default:
       return "Unknown";
   }
 }
 
 static Board boardFromString(const std::string& s) {
-  if (s == "MB2019") return MB2019;
+  if (s == "MoonBoard 2019") return MB2019;
+  if (s == "MoonBoard 2024") return MB2024;
   throw std::runtime_error("Unknown board: " + s);
 }
 
 static std::string gradeToString(const Grade grade) {
   switch (grade) {
     case V3:
-      return "V3";
+      return "6a+/V3";
     case V4:
-      return "V4";
+      return "6b/V4";
+    case V5:
+      return "6c/V5";
+    case V6:
+      return "7a/V6";
+    case V7:
+      return "7a+/V7";
     default:
       return "Ungraded";
   }
 }
 
 static Grade gradeFromString(const std::string& s) {
-  if (s == "V3") return V3;
-  if (s == "V4") return V4;
+  if (s == "6a+/V3") return V3;
+  if (s == "6b/V4") return V4;
+  if (s == "6c/V5") return V5;
+  if (s == "7a/V6") return V6;
+  if (s == "7a+/V7") return V7;
   throw std::runtime_error("Unknown grade: " + s);
 }
 
@@ -195,6 +207,9 @@ std::ostream& operator<<(std::ostream& os, const Board board) {
     case MB2019:
       os << "MoonBoard 2019";
       break;
+    case MB2024:
+      os << "MoonBoard 2024";
+      break;
     default:
       os << "N/A";
   }
@@ -208,6 +223,15 @@ std::ostream& operator<<(std::ostream& os, const Grade grade) {
       break;
     case V4:
       os << "6b/V4";
+      break;
+    case V5:
+      os << "6c/V5";
+      break;
+    case V6:
+      os << "7a/V6";
+      break;
+    case V7:
+      os << "7a+/V7";
       break;
     default:
       os << "Ungraded";

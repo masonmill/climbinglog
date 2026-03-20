@@ -12,6 +12,7 @@
 
 enum Board {
   MB2019,
+  MB2024,
 };
 
 std::ostream& operator<<(std::ostream& os, Board board);
@@ -19,6 +20,9 @@ std::ostream& operator<<(std::ostream& os, Board board);
 enum Grade {
   V3,
   V4,
+  V5,
+  V6,
+  V7,
 };
 
 std::ostream& operator<<(std::ostream& os, Grade grade);
