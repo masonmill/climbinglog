@@ -1,13 +1,13 @@
-add_executable(database_test
-        DatabaseTest.cpp
+add_executable(climbinglog_test
+        ClimbingLogTest.cpp
 )
 
-target_link_libraries(database_test
+target_link_libraries(climbinglog_test
         PRIVATE
-        database
+        climbinglog
 )
 
-target_include_directories(database_test
+target_include_directories(climbinglog_test
         PRIVATE
         ${CMAKE_SOURCE_DIR}/src
 )
