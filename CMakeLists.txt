@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-add_subdirectory(src)
+add_subdirectory(core)
 
 enable_testing()
 add_subdirectory(test)
