@@ -33,17 +33,17 @@ typedef enum {
 // ─── Entry data ──────────────────────────────────────────────────────────────
 
 typedef struct {
-  int64_t  timestamp;  // Unix epoch seconds
-  char     name[256];  // null-terminated, max 255 chars
-  CLBoard  board;
-  CLGrade  grade;
+  int64_t timestamp;  // Unix epoch seconds
+  char name[256];     // null-terminated, max 255 chars
+  CLBoard board;
+  CLGrade grade;
   uint32_t attempts;
-  double   incline;
-  bool     sent;
+  double incline;
+  bool sent;
 } CLEntryData;
 
 typedef struct {
-  uint64_t    id;
+  uint64_t id;
   CLEntryData data;
 } CLEntry;
 
@@ -52,15 +52,15 @@ typedef struct {
 typedef struct CLLog CLLog;
 
 CLLog* cl_log_create(void);
-void   cl_log_destroy(CLLog* log);
+void cl_log_destroy(CLLog* log);
 
 // ─── CRUD ────────────────────────────────────────────────────────────────────
 // Functions that can fail return 0 on success, -1 on error (e.g. ID not found).
 
 uint64_t cl_log_add_entry(CLLog* log, CLEntryData data);
-int      cl_log_remove_entry(CLLog* log, uint64_t entry_id);
-int      cl_log_get_entry(const CLLog* log, uint64_t entry_id, CLEntry* out);
-int      cl_log_set_entry(CLLog* log, uint64_t entry_id, CLEntryData data);
+int cl_log_remove_entry(CLLog* log, uint64_t entry_id);
+int cl_log_get_entry(const CLLog* log, uint64_t entry_id, CLEntry* out);
+int cl_log_set_entry(CLLog* log, uint64_t entry_id, CLEntryData data);
 
 // ─── Pagination ──────────────────────────────────────────────────────────────
 

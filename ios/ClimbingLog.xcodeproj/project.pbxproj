@@ -92,6 +92,16 @@
 			);
 			sourceTree = "<group>";
 		};
+		93F9CE502F7419E8000E6F42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93F9CE4F2F7419E8000E6F42 /* ClimbingLog.app */,
+				93F9CE5C2F7419EA000E6F42 /* ClimbingLogTests.xctest */,
+				93F9CE662F7419EA000E6F42 /* ClimbingLogUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AA000007AA000007AA000007 /* core */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +109,7 @@
 				AA000009AA000009AA000009 /* src */,
 			);
 			name = core;
-			path = "../core";
+			path = ../core;
 			sourceTree = "<group>";
 		};
 		AA000008AA000008AA000008 /* include */ = {
@@ -107,7 +117,6 @@
 			children = (
 				AA000003AA000003AA000003 /* climbing_log.h */,
 			);
-			name = include;
 			path = include;
 			sourceTree = "<group>";
 		};
@@ -118,18 +127,7 @@
 				AA000005AA000005AA000005 /* ClimbingLog.cpp */,
 				AA000006AA000006AA000006 /* climbing_log_bridge.cpp */,
 			);
-			name = src;
 			path = src;
-			sourceTree = "<group>";
-		};
-		93F9CE502F7419E8000E6F42 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				93F9CE4F2F7419E8000E6F42 /* ClimbingLog.app */,
-				93F9CE5C2F7419EA000E6F42 /* ClimbingLogTests.xctest */,
-				93F9CE662F7419EA000E6F42 /* ClimbingLogUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -364,7 +362,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -422,7 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -447,12 +445,12 @@
 					"$(SRCROOT)/../core/src",
 					"$(SRCROOT)/../core/vendor",
 				);
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ClimbingLog/Bridging-Header.h";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,6 +462,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ClimbingLog/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,12 +484,12 @@
 					"$(SRCROOT)/../core/src",
 					"$(SRCROOT)/../core/vendor",
 				);
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ClimbingLog/Bridging-Header.h";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -502,6 +501,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ClimbingLog/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
