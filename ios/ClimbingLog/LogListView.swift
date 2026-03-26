@@ -21,6 +21,11 @@ struct LogListView: View {
             }
             .navigationTitle("Climbing Log")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gear")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         showingAddEntry = true

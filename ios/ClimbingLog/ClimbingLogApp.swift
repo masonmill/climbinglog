@@ -20,6 +20,7 @@ struct ClimbingLogApp: App {
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
                 store.serialize()
+                Task { await store.syncIfNeeded() }
             }
         }
     }
