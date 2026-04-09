@@ -7,13 +7,13 @@ import SwiftUI
 
 struct LogListView: View {
     @Environment(ClimbingLogStore.self) private var store
-    @State private var showingAddEntry = false
-    @State private var entryToDelete: EntryViewModel?
+    @State private var showingAddSession = false
+    @State private var climbToDelete: ClimbViewModel?
 
     var body: some View {
         NavigationStack {
             Group {
-                if store.entries.isEmpty {
+                if store.climbs.isEmpty {
                     emptyState
                 } else {
                     list
@@ -28,32 +28,32 @@ struct LogListView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showingAddEntry = true
+                        showingAddSession = true
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
             }
         }
-        .sheet(isPresented: $showingAddEntry) {
-            EntryFormView(store: store)
+        .sheet(isPresented: $showingAddSession) {
+            SessionFormView(store: store)
         }
-        .alert("Delete Entry", isPresented: .init(
-            get: { entryToDelete != nil },
-            set: { if !$0 { entryToDelete = nil } }
+        .alert("Delete Climb", isPresented: .init(
+            get: { climbToDelete != nil },
+            set: { if !$0 { climbToDelete = nil } }
         )) {
             Button("Delete", role: .destructive) {
-                if let entry = entryToDelete {
-                    store.removeEntry(id: entry.id)
+                if let climb = climbToDelete {
+                    store.removeClimb(id: climb.id)
                 }
-                entryToDelete = nil
+                climbToDelete = nil
             }
             Button("Cancel", role: .cancel) {
-                entryToDelete = nil
+                climbToDelete = nil
             }
         } message: {
-            if let entry = entryToDelete {
-                Text("Delete \"\(entry.name)\"? This cannot be undone.")
+            if let climb = climbToDelete {
+                Text("Delete \"\(climb.name)\" and all its sessions? This cannot be undone.")
             }
         }
     }
@@ -62,13 +62,13 @@ struct LogListView: View {
 
     private var list: some View {
         List {
-            ForEach(store.entries) { entry in
-                NavigationLink(destination: EntryDetailView(entry: entry)) {
-                    EntryRowView(entry: entry)
+            ForEach(store.climbs) { climb in
+                NavigationLink(destination: ClimbDetailView(climb: climb)) {
+                    ClimbRowView(climb: climb, store: store)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
-                        entryToDelete = entry
+                        climbToDelete = climb
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -83,10 +83,10 @@ struct LogListView: View {
             Image(systemName: "figure.climbing")
                 .font(.system(size: 52))
                 .foregroundStyle(.secondary)
-            Text("No Entries")
+            Text("No Climbs")
                 .font(.title2)
                 .fontWeight(.semibold)
-            Text("Tap + to log your first problem.")
+            Text("Tap + to log your first session.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -95,18 +95,19 @@ struct LogListView: View {
 
 // ─── Row ──────────────────────────────────────────────────────────────────────
 
-private struct EntryRowView: View {
-    let entry: EntryViewModel
+private struct ClimbRowView: View {
+    let climb: ClimbViewModel
+    let store: ClimbingLogStore
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(entry.name)
+                Text(climb.name)
                     .font(.body)
                     .fontWeight(.medium)
                 HStack(spacing: 6) {
                     gradeChip
-                    Text(entry.board.displayName)
+                    Text(climb.board.displayName)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -115,11 +116,13 @@ private struct EntryRowView: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 4) {
-                Text(entry.date.formatted(date: .abbreviated, time: .omitted))
+                let sessions = store.sessions(for: climb.id)
+                Text("\(sessions.count) session\(sessions.count == 1 ? "" : "s")")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Image(systemName: entry.sent ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(entry.sent ? .green : .secondary)
+                let everSent = sessions.contains(where: \.sent)
+                Image(systemName: everSent ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(everSent ? .green : .secondary)
                     .font(.system(size: 16))
             }
         }
@@ -127,13 +130,13 @@ private struct EntryRowView: View {
     }
 
     private var gradeChip: some View {
-        Text(entry.grade.displayName)
+        Text(climb.grade.displayName)
             .font(.caption)
             .fontWeight(.medium)
             .padding(.horizontal, 7)
             .padding(.vertical, 2)
-            .background(entry.grade.color.opacity(0.15))
-            .foregroundStyle(entry.grade.color)
+            .background(climb.grade.color.opacity(0.15))
+            .foregroundStyle(climb.grade.color)
             .clipShape(Capsule())
     }
 }

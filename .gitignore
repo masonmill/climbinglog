@@ -2,7 +2,7 @@
 .DS_Store
 
 # CMake build directories
-cmake-build-*/
+cmake-build*/
 
 # nlohmann/json headers copied here by CMake for Xcode consumption
 core/vendor/

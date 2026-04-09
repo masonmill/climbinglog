@@ -1,53 +1,117 @@
 //
-//  EntryDetailView.swift
+//  ClimbDetailView.swift
 //  ClimbingLog
 //
 
 import SwiftUI
 
-struct EntryDetailView: View {
+struct ClimbDetailView: View {
     @Environment(ClimbingLogStore.self) private var store
-    let entry: EntryViewModel
-    @State private var showingEdit = false
+    let climb: ClimbViewModel
+    @State private var showingAddSession = false
+    @State private var showingEditClimb = false
+    @State private var sessionToDelete: SessionViewModel?
 
     var body: some View {
-        Form {
+        let sessions = store.sessions(for: climb.id)
+
+        List {
             Section("Problem") {
-                LabeledContent("Name", value: entry.name)
-                LabeledContent("Date", value: entry.date.formatted(date: .long, time: .omitted))
-                LabeledContent("Board", value: entry.board.displayName)
+                LabeledContent("Name", value: climb.name)
+                LabeledContent("Board", value: climb.board.displayName)
                 LabeledContent("Grade") {
-                    Text(entry.grade.displayName)
-                        .foregroundStyle(entry.grade.color)
+                    Text(climb.grade.displayName)
+                        .foregroundStyle(climb.grade.color)
                         .fontWeight(.medium)
                 }
             }
 
-            Section("Session") {
-                LabeledContent("Attempts", value: String(entry.attempts))
-                LabeledContent("Incline", value: String(format: "%.0f°", entry.incline))
-                LabeledContent("Sent") {
-                    HStack(spacing: 4) {
-                        Image(systemName: entry.sent ? "checkmark.circle.fill" : "circle")
-                            .foregroundStyle(entry.sent ? .green : .secondary)
-                        Text(entry.sent ? "Yes" : "No")
-                            .foregroundStyle(entry.sent ? .primary : .secondary)
+            Section("Sessions") {
+                if sessions.isEmpty {
+                    Text("No sessions yet.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(sessions) { session in
+                        SessionRowView(session: session)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    sessionToDelete = session
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
                     }
                 }
             }
         }
-        .navigationTitle(entry.name)
+        .navigationTitle(climb.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Edit") { showingEdit = true }
+                Menu {
+                    Button { showingEditClimb = true } label: {
+                        Label("Edit Climb", systemImage: "pencil")
+                    }
+                    Button { showingAddSession = true } label: {
+                        Label("Add Session", systemImage: "plus")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
             }
         }
-        .sheet(isPresented: $showingEdit) {
-            // Look up the current version of this entry in case it was updated.
-            if let current = store.entries.first(where: { $0.id == entry.id }) {
-                EntryFormView(store: store, entry: current)
-            }
+        .sheet(isPresented: $showingAddSession) {
+            SessionFormView(store: store, climbID: climb.id, climbName: climb.name,
+                            board: climb.board, grade: climb.grade)
         }
+        .sheet(isPresented: $showingEditClimb) {
+            ClimbFormView(store: store, climb: climb)
+        }
+        .alert("Delete Session", isPresented: .init(
+            get: { sessionToDelete != nil },
+            set: { if !$0 { sessionToDelete = nil } }
+        )) {
+            Button("Delete", role: .destructive) {
+                if let session = sessionToDelete {
+                    store.removeSession(climbID: climb.id, sessionID: session.id)
+                }
+                sessionToDelete = nil
+            }
+            Button("Cancel", role: .cancel) {
+                sessionToDelete = nil
+            }
+        } message: {
+            Text("Delete this session? This cannot be undone.")
+        }
+    }
+}
+
+// ─── Session Row ──────────────────────────────────────────────────────────────
+
+private struct SessionRowView: View {
+    let session: SessionViewModel
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(session.date.formatted(date: .abbreviated, time: .omitted))
+                    .font(.body)
+                HStack(spacing: 8) {
+                    Text("\(session.attempts) attempt\(session.attempts == 1 ? "" : "s")")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(String(format: "%.0f°", session.incline))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Spacer()
+
+            Image(systemName: session.sent ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(session.sent ? .green : .secondary)
+                .font(.system(size: 16))
+        }
+        .padding(.vertical, 2)
     }
 }
