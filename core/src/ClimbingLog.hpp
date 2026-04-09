@@ -27,41 +27,86 @@ enum Grade {
 
 std::ostream& operator<<(std::ostream& os, Grade grade);
 
-// ─── EntryData ───────────────────────────────────────────────────────────────
+// ─── SessionData ─────────────────────────────────────────────────────────────
 //
-// Plain data bag — no identity, no static counters. Pass this to addEntry()
-// to create a new entry, or to setEntry() to overwrite an existing one.
+// Per-day attempt record. Pass this to addSession() to log a new session.
 
-struct EntryData {
+struct SessionData {
   std::chrono::system_clock::time_point timestamp;
-  std::string name;
-  Board board;
-  Grade grade;
   uint32_t attempts;
   double incline;
   bool sent;
 };
 
-// ─── Entry ───────────────────────────────────────────────────────────────────
+// ─── Session ─────────────────────────────────────────────────────────────────
 //
-// Read-only handle returned by the log. Construction is private so that IDs
-// are always assigned by ClimbingLog, never by callers.
+// Read-only handle returned by the log. IDs are assigned by the owning Climb.
 
-class Entry {
+class Session {
  public:
-  [[nodiscard]] uint64_t getID() const { return entryID; }
-  [[nodiscard]] const EntryData& getData() const { return data; }
+  [[nodiscard]] uint64_t getID() const { return sessionID; }
+  [[nodiscard]] const SessionData& getData() const { return data; }
 
-  friend std::ostream& operator<<(std::ostream& os, const Entry& entry);
+ private:
+  friend class Climb;
+  friend class ClimbingLog;
+  friend Session sessionFromJson(const nlohmann::json& j);
+
+  Session(const uint64_t id, SessionData data)
+      : sessionID(id), data(std::move(data)) {}
+
+  uint64_t sessionID;
+  SessionData data;
+};
+
+// ─── ClimbData ───────────────────────────────────────────────────────────────
+//
+// Identity of a problem — name + board + grade. Pass this to addClimb().
+
+struct ClimbData {
+  std::string name;
+  Board board;
+  Grade grade;
+};
+
+// ─── Climb ───────────────────────────────────────────────────────────────────
+//
+// A problem with its session history. Construction is private so that IDs
+// are always assigned by ClimbingLog.
+
+class Climb {
+ public:
+  [[nodiscard]] uint64_t getID() const { return climbID; }
+  [[nodiscard]] const ClimbData& getData() const { return data; }
+  [[nodiscard]] const std::vector<Session>& getSessions() const {
+    return sessions;
+  }
+  [[nodiscard]] size_t sessionCount() const { return sessions.size(); }
+
+  friend std::ostream& operator<<(std::ostream& os, const Climb& climb);
 
  private:
   friend class ClimbingLog;
+  friend nlohmann::json climbToJson(const Climb& climb);
 
-  Entry(const uint64_t id, EntryData data)
-      : entryID(id), data(std::move(data)) {}
+  Climb(const uint64_t id, ClimbData data)
+      : climbID(id), data(std::move(data)) {}
 
-  uint64_t entryID;
-  EntryData data;
+  uint64_t addSession(SessionData sessionData);
+  void removeSession(uint64_t sessionID);
+  Session& getSession(uint64_t sessionID);
+  [[nodiscard]] const Session& getSession(uint64_t sessionID) const;
+  void setSession(uint64_t sessionID, SessionData sessionData);
+
+  void sortSessionsByTimestamp();
+  std::vector<Session>::iterator findSessionByID(uint64_t sessionID);
+  [[nodiscard]] std::vector<Session>::const_iterator findSessionByID(
+      uint64_t sessionID) const;
+
+  uint64_t climbID;
+  ClimbData data;
+  uint64_t nextSessionID = 0;
+  std::vector<Session> sessions;
 };
 
 // ─── ClimbingLog ─────────────────────────────────────────────────────────────
@@ -71,48 +116,53 @@ class ClimbingLog {
   ClimbingLog();
   ~ClimbingLog();
 
-  // Assigns a new ID and inserts the entry sorted by timestamp.
-  // Returns the assigned ID.
-  uint64_t addEntry(EntryData data);
+  // ── Climb CRUD ──────────────────────────────────────────────────────────
 
-  // Throws std::out_of_range if entryID is not found.
-  void removeEntry(uint64_t entryID);
+  // Assigns a new ID and inserts the climb sorted by name.
+  uint64_t addClimb(ClimbData data);
 
-  // Throws std::out_of_range if entryID is not found.
-  Entry& getEntry(uint64_t entryID);
-  [[nodiscard]] const Entry& getEntry(uint64_t entryID) const;
+  // Throws std::out_of_range if climbID is not found.
+  void removeClimb(uint64_t climbID);
 
-  // Replaces the data of an existing entry without touching its ID.
-  // Re-sorts by timestamp since the new data may have a different timestamp.
-  // Throws std::out_of_range if entryID is not found.
-  void setEntry(uint64_t entryID, EntryData data);
+  // Throws std::out_of_range if climbID is not found.
+  Climb& getClimb(uint64_t climbID);
+  [[nodiscard]] const Climb& getClimb(uint64_t climbID) const;
 
-  // Returns a view of `count` entries starting at `offset`.
-  // The span is valid until the next mutating operation on the log.
-  [[nodiscard]] std::span<const Entry> getEntries(size_t offset,
+  // Updates the identity fields of a climb. Re-sorts by name.
+  // Throws std::out_of_range if climbID is not found.
+  void setClimb(uint64_t climbID, ClimbData data);
+
+  [[nodiscard]] std::span<const Climb> getClimbs(size_t offset,
                                                   size_t count) const;
 
-  [[nodiscard]] size_t size() const { return entries.size(); }
-  [[nodiscard]] bool empty() const { return entries.empty(); }
+  [[nodiscard]] size_t size() const { return climbs.size(); }
+  [[nodiscard]] bool empty() const { return climbs.empty(); }
 
-  // Sorts entries by timestamp, then writes the log to a JSON file.
-  // Throws std::runtime_error on failure.
+  // ── Session CRUD (delegated to the owning Climb) ────────────────────────
+
+  // Throws std::out_of_range if climbID is not found.
+  uint64_t addSession(uint64_t climbID, SessionData data);
+  void removeSession(uint64_t climbID, uint64_t sessionID);
+  Session& getSession(uint64_t climbID, uint64_t sessionID);
+  [[nodiscard]] const Session& getSession(uint64_t climbID,
+                                           uint64_t sessionID) const;
+  void setSession(uint64_t climbID, uint64_t sessionID, SessionData data);
+
+  // ── Serialization ───────────────────────────────────────────────────────
+
   void serializeLog(const std::filesystem::path& path) const;
-
-  // Reads a JSON file and reconstructs the log, restoring nextID.
-  // Throws std::runtime_error on failure.
   void deserializeLog(const std::filesystem::path& path);
 
   friend std::ostream& operator<<(std::ostream& os, const ClimbingLog& log);
 
  private:
-  std::vector<Entry>::iterator findByID(uint64_t entryID);
-  [[nodiscard]] std::vector<Entry>::const_iterator findByID(
-      uint64_t entryID) const;
+  std::vector<Climb>::iterator findByID(uint64_t climbID);
+  [[nodiscard]] std::vector<Climb>::const_iterator findByID(
+      uint64_t climbID) const;
 
-  void sortByTimestamp();
-  static Entry entryFromJson(const nlohmann::json& j);
+  void sortByName();
+  static Climb climbFromJson(const nlohmann::json& j);
 
-  uint64_t nextID = 0;
-  std::vector<Entry> entries;
+  uint64_t nextClimbID = 0;
+  std::vector<Climb> climbs;
 };

@@ -58,45 +58,50 @@ enum Grade: Int32, CaseIterable, Hashable {
     }
 }
 
-// ─── EntryViewModel ───────────────────────────────────────────────────────────
+// ─── ClimbViewModel ───────────────────────────────────────────────────────────
 
-struct EntryViewModel: Identifiable {
+struct ClimbViewModel: Identifiable {
     let id: UInt64
-    var date: Date
     var name: String
     var board: Board
     var grade: Grade
+
+    init(from climb: CLClimb) {
+        id = climb.id
+        name = withUnsafeBytes(of: climb.data.name) { raw in
+            String(cString: raw.baseAddress!.assumingMemoryBound(to: CChar.self))
+        }
+        board = Board(climb.data.board)
+        grade = Grade(climb.data.grade)
+    }
+}
+
+// ─── SessionViewModel ─────────────────────────────────────────────────────────
+
+struct SessionViewModel: Identifiable {
+    let id: UInt64
+    let climbID: UInt64
+    var date: Date
     var attempts: UInt32
     var incline: Double
     var sent: Bool
 
-    init(from entry: CLEntry) {
-        id = entry.id
-        date = Date(timeIntervalSince1970: TimeInterval(entry.data.timestamp))
-        name = withUnsafeBytes(of: entry.data.name) { raw in
-            String(cString: raw.baseAddress!.assumingMemoryBound(to: CChar.self))
-        }
-        board = Board(entry.data.board)
-        grade = Grade(entry.data.grade)
-        attempts = entry.data.attempts
-        incline = entry.data.incline
-        sent = entry.data.sent
+    init(from session: CLSession, climbID: UInt64) {
+        id = session.id
+        self.climbID = climbID
+        date = Date(timeIntervalSince1970: TimeInterval(session.data.timestamp))
+        attempts = session.data.attempts
+        incline = session.data.incline
+        sent = session.data.sent
     }
 }
 
-// ─── CLEntryData builder ──────────────────────────────────────────────────────
+// ─── CLClimbData builder ──────────────────────────────────────────────────────
 
-func makeEntryData(name: String, date: Date, board: Board, grade: Grade,
-                   attempts: UInt32, incline: Double, sent: Bool) -> CLEntryData {
-    var data = CLEntryData()
-    data.timestamp = Int64(date.timeIntervalSince1970)
+func makeClimbData(name: String, board: Board, grade: Grade) -> CLClimbData {
+    var data = CLClimbData()
     data.board = board.clValue
     data.grade = grade.clValue
-    data.attempts = attempts
-    data.incline = incline
-    data.sent = sent
-    // Copy name into the fixed-size char[256] buffer.
-    // Truncate to 255 characters so the null terminator always fits.
     let truncated = String(name.prefix(255))
     truncated.utf8CString.withUnsafeBytes { src in
         withUnsafeMutableBytes(of: &data.name) { dst in
@@ -104,5 +109,16 @@ func makeEntryData(name: String, date: Date, board: Board, grade: Grade,
                                                         count: min(src.count, 256)))
         }
     }
+    return data
+}
+
+// ─── CLSessionData builder ────────────────────────────────────────────────────
+
+func makeSessionData(date: Date, attempts: UInt32, incline: Double, sent: Bool) -> CLSessionData {
+    var data = CLSessionData()
+    data.timestamp = Int64(date.timeIntervalSince1970)
+    data.attempts = attempts
+    data.incline = incline
+    data.sent = sent
     return data
 }

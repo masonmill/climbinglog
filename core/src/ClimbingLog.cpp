@@ -53,109 +53,214 @@ static Grade gradeFromString(const std::string& s) {
 }
 
 // ─── JSON conversion ─────────────────────────────────────────────────────────
-//
-// Timestamps are stored as Unix epoch seconds (int64_t).
-// JavaScript reads them directly via new Date(ts * 1000).
 
-static json entryToJson(const Entry& entry) {
-  const auto& [timestamp, name, board, grade, attempts, incline, sent] =
-      entry.getData();
-  const int64_t epochSeconds = std::chrono::duration_cast<std::chrono::seconds>(
-                                   timestamp.time_since_epoch())
-                                   .count();
-
+static json sessionToJson(const Session& session) {
+  const auto& d = session.getData();
+  const int64_t epochSeconds =
+      std::chrono::duration_cast<std::chrono::seconds>(
+          d.timestamp.time_since_epoch())
+          .count();
   return {
-      {"id", entry.getID()},
+      {"id", session.getID()},
       {"timestamp", epochSeconds},
-      {"name", name},
-      {"board", boardToString(board)},
-      {"grade", gradeToString(grade)},
-      {"attempts", attempts},
-      {"incline", incline},
-      {"sent", sent},
+      {"attempts", d.attempts},
+      {"incline", d.incline},
+      {"sent", d.sent},
   };
 }
 
-// static
-Entry ClimbingLog::entryFromJson(const json& j) {
+Session sessionFromJson(const json& j) {
   const int64_t epochSeconds = j.at("timestamp").get<int64_t>();
-  const auto timestamp =
-      std::chrono::system_clock::time_point(std::chrono::seconds(epochSeconds));
-
-  EntryData data{
-      .timestamp = timestamp,
-      .name = j.at("name").get<std::string>(),
-      .board = boardFromString(j.at("board").get<std::string>()),
-      .grade = gradeFromString(j.at("grade").get<std::string>()),
+  SessionData data{
+      .timestamp = std::chrono::system_clock::time_point(
+          std::chrono::seconds(epochSeconds)),
       .attempts = j.at("attempts").get<uint32_t>(),
       .incline = j.at("incline").get<double>(),
       .sent = j.at("sent").get<bool>(),
   };
+  return {j.at("id").get<uint64_t>(), std::move(data)};
+}
 
-  const uint64_t id = j.at("id").get<uint64_t>();
-  return {id, std::move(data)};
+json climbToJson(const Climb& climb) {
+  const auto& d = climb.getData();
+  json sessions = json::array();
+  for (const auto& s : climb.getSessions()) sessions.push_back(sessionToJson(s));
+
+  return {
+      {"id", climb.getID()},
+      {"name", d.name},
+      {"board", boardToString(d.board)},
+      {"grade", gradeToString(d.grade)},
+      {"nextSessionID", climb.nextSessionID},
+      {"sessions", sessions},
+  };
+}
+
+// static
+Climb ClimbingLog::climbFromJson(const json& j) {
+  ClimbData data{
+      .name = j.at("name").get<std::string>(),
+      .board = boardFromString(j.at("board").get<std::string>()),
+      .grade = gradeFromString(j.at("grade").get<std::string>()),
+  };
+  Climb climb(j.at("id").get<uint64_t>(), std::move(data));
+  climb.nextSessionID = j.at("nextSessionID").get<uint64_t>();
+  for (const auto& js : j.at("sessions"))
+    climb.sessions.emplace_back(sessionFromJson(js));
+  climb.sortSessionsByTimestamp();
+  return climb;
+}
+
+// ─── Climb ───────────────────────────────────────────────────────────────────
+
+uint64_t Climb::addSession(SessionData sessionData) {
+  const uint64_t id = nextSessionID++;
+  sessions.emplace_back(Session(id, std::move(sessionData)));
+  sortSessionsByTimestamp();
+  return id;
+}
+
+void Climb::removeSession(const uint64_t sessionID) {
+  const auto it = findSessionByID(sessionID);
+  if (it == sessions.end())
+    throw std::out_of_range("removeSession: sessionID " +
+                            std::to_string(sessionID) + " not found");
+  sessions.erase(it);
+}
+
+Session& Climb::getSession(const uint64_t sessionID) {
+  const auto it = findSessionByID(sessionID);
+  if (it == sessions.end())
+    throw std::out_of_range("getSession: sessionID " +
+                            std::to_string(sessionID) + " not found");
+  return *it;
+}
+
+const Session& Climb::getSession(const uint64_t sessionID) const {
+  const auto it = findSessionByID(sessionID);
+  if (it == sessions.end())
+    throw std::out_of_range("getSession: sessionID " +
+                            std::to_string(sessionID) + " not found");
+  return *it;
+}
+
+void Climb::setSession(const uint64_t sessionID, SessionData sessionData) {
+  const auto it = findSessionByID(sessionID);
+  if (it == sessions.end())
+    throw std::out_of_range("setSession: sessionID " +
+                            std::to_string(sessionID) + " not found");
+  it->data = std::move(sessionData);
+  sortSessionsByTimestamp();
+}
+
+void Climb::sortSessionsByTimestamp() {
+  std::ranges::sort(sessions, [](const Session& a, const Session& b) {
+    return a.data.timestamp < b.data.timestamp;
+  });
+}
+
+std::vector<Session>::iterator Climb::findSessionByID(
+    const uint64_t sessionID) {
+  return std::ranges::find_if(sessions, [sessionID](const Session& s) {
+    return s.sessionID == sessionID;
+  });
+}
+
+std::vector<Session>::const_iterator Climb::findSessionByID(
+    const uint64_t sessionID) const {
+  return std::ranges::find_if(sessions, [sessionID](const Session& s) {
+    return s.sessionID == sessionID;
+  });
 }
 
 // ─── ClimbingLog ─────────────────────────────────────────────────────────────
 
-ClimbingLog::ClimbingLog() { entries.reserve(512); }
+ClimbingLog::ClimbingLog() { climbs.reserve(128); }
 
 ClimbingLog::~ClimbingLog() = default;
 
-uint64_t ClimbingLog::addEntry(EntryData data) {
-  const uint64_t id = nextID++;
-  entries.emplace_back(Entry(id, std::move(data)));
-  sortByTimestamp();
+// ── Climb CRUD ──────────────────────────────────────────────────────────────
+
+uint64_t ClimbingLog::addClimb(ClimbData data) {
+  const uint64_t id = nextClimbID++;
+  climbs.emplace_back(Climb(id, std::move(data)));
+  sortByName();
   return id;
 }
 
-void ClimbingLog::removeEntry(const uint64_t entryID) {
-  const auto it = findByID(entryID);
-  if (it == entries.end())
-    throw std::out_of_range("removeEntry: entryID " + std::to_string(entryID) +
-                            " not found");
-  entries.erase(it);
+void ClimbingLog::removeClimb(const uint64_t climbID) {
+  const auto it = findByID(climbID);
+  if (it == climbs.end())
+    throw std::out_of_range("removeClimb: climbID " +
+                            std::to_string(climbID) + " not found");
+  climbs.erase(it);
 }
 
-Entry& ClimbingLog::getEntry(const uint64_t entryID) {
-  const auto it = findByID(entryID);
-  if (it == entries.end())
-    throw std::out_of_range("getEntry: entryID " + std::to_string(entryID) +
-                            " not found");
-  return *it;
-}
-
-const Entry& ClimbingLog::getEntry(const uint64_t entryID) const {
-  const auto it = findByID(entryID);
-  if (it == entries.end())
-    throw std::out_of_range("getEntry: entryID " + std::to_string(entryID) +
+Climb& ClimbingLog::getClimb(const uint64_t climbID) {
+  const auto it = findByID(climbID);
+  if (it == climbs.end())
+    throw std::out_of_range("getClimb: climbID " + std::to_string(climbID) +
                             " not found");
   return *it;
 }
 
-void ClimbingLog::setEntry(const uint64_t entryID, EntryData data) {
-  const auto it = findByID(entryID);
-  if (it == entries.end())
-    throw std::out_of_range("setEntry: entryID " + std::to_string(entryID) +
+const Climb& ClimbingLog::getClimb(const uint64_t climbID) const {
+  const auto it = findByID(climbID);
+  if (it == climbs.end())
+    throw std::out_of_range("getClimb: climbID " + std::to_string(climbID) +
+                            " not found");
+  return *it;
+}
+
+void ClimbingLog::setClimb(const uint64_t climbID, ClimbData data) {
+  const auto it = findByID(climbID);
+  if (it == climbs.end())
+    throw std::out_of_range("setClimb: climbID " + std::to_string(climbID) +
                             " not found");
   it->data = std::move(data);
-  sortByTimestamp();
+  sortByName();
 }
 
-std::span<const Entry> ClimbingLog::getEntries(const size_t offset,
+std::span<const Climb> ClimbingLog::getClimbs(const size_t offset,
                                                const size_t count) const {
-  if (offset >= entries.size()) return {};
-  const size_t available = entries.size() - offset;
-  return std::span(entries).subspan(offset, std::min(count, available));
+  if (offset >= climbs.size()) return {};
+  const size_t available = climbs.size() - offset;
+  return std::span(climbs).subspan(offset, std::min(count, available));
+}
+
+// ── Session CRUD ────────────────────────────────────────────────────────────
+
+uint64_t ClimbingLog::addSession(const uint64_t climbID, SessionData data) {
+  return getClimb(climbID).addSession(std::move(data));
+}
+
+void ClimbingLog::removeSession(const uint64_t climbID,
+                                 const uint64_t sessionID) {
+  getClimb(climbID).removeSession(sessionID);
+}
+
+Session& ClimbingLog::getSession(const uint64_t climbID,
+                                  const uint64_t sessionID) {
+  return getClimb(climbID).getSession(sessionID);
+}
+
+const Session& ClimbingLog::getSession(const uint64_t climbID,
+                                        const uint64_t sessionID) const {
+  return getClimb(climbID).getSession(sessionID);
+}
+
+void ClimbingLog::setSession(const uint64_t climbID, const uint64_t sessionID,
+                              SessionData data) {
+  getClimb(climbID).setSession(sessionID, std::move(data));
 }
 
 // ─── Serialization ───────────────────────────────────────────────────────────
 
 void ClimbingLog::serializeLog(const std::filesystem::path& path) const {
   json j;
-  j["nextID"] = nextID;
-  j["entries"] = json::array();
-  for (const Entry& entry : entries) j["entries"].push_back(entryToJson(entry));
+  j["nextClimbID"] = nextClimbID;
+  j["climbs"] = json::array();
+  for (const auto& climb : climbs) j["climbs"].push_back(climbToJson(climb));
 
   std::ofstream file(path);
   if (!file.is_open())
@@ -167,36 +272,35 @@ void ClimbingLog::serializeLog(const std::filesystem::path& path) const {
 void ClimbingLog::deserializeLog(const std::filesystem::path& path) {
   std::ifstream file(path);
   if (!file.is_open())
-    throw std::runtime_error("deserializeLog: could not open " + path.string() +
-                             " for reading");
+    throw std::runtime_error("deserializeLog: could not open " +
+                             path.string() + " for reading");
 
   const json j = json::parse(file);
-  nextID = j.at("nextID").get<uint64_t>();
+  nextClimbID = j.at("nextClimbID").get<uint64_t>();
 
-  entries.clear();
-  for (const json& je : j.at("entries"))
-    entries.emplace_back(entryFromJson(je));
+  climbs.clear();
+  for (const auto& jc : j.at("climbs"))
+    climbs.emplace_back(climbFromJson(jc));
 
-  // Entries are stored sorted, but re-sort defensively on load.
-  sortByTimestamp();
+  sortByName();
 }
 
 // ─── Private helpers ─────────────────────────────────────────────────────────
 
-std::vector<Entry>::iterator ClimbingLog::findByID(uint64_t entryID) {
+std::vector<Climb>::iterator ClimbingLog::findByID(const uint64_t climbID) {
   return std::ranges::find_if(
-      entries, [entryID](const Entry& e) { return e.entryID == entryID; });
+      climbs, [climbID](const Climb& c) { return c.climbID == climbID; });
 }
 
-std::vector<Entry>::const_iterator ClimbingLog::findByID(
-    uint64_t entryID) const {
+std::vector<Climb>::const_iterator ClimbingLog::findByID(
+    const uint64_t climbID) const {
   return std::ranges::find_if(
-      entries, [entryID](const Entry& e) { return e.entryID == entryID; });
+      climbs, [climbID](const Climb& c) { return c.climbID == climbID; });
 }
 
-void ClimbingLog::sortByTimestamp() {
-  std::ranges::sort(entries, [](const Entry& a, const Entry& b) {
-    return a.data.timestamp < b.data.timestamp;
+void ClimbingLog::sortByName() {
+  std::ranges::sort(climbs, [](const Climb& a, const Climb& b) {
+    return a.data.name < b.data.name;
   });
 }
 
@@ -239,29 +343,25 @@ std::ostream& operator<<(std::ostream& os, const Grade grade) {
   return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Entry& entry) {
-  const auto& [timestamp, name, board, grade, attempts, incline, sent] =
-      entry.data;
-  const auto tt = std::chrono::system_clock::to_time_t(timestamp);
-  os << "\t" << std::ctime(&tt);
-  os << "\t" << board << " at " << incline << " degrees\n";
-  os << "\t" << name << " (" << grade << ")\n";
-
-  if (sent && attempts == 1)
-    os << "\tFlashed!\n";
-  else if (sent)
-    os << "\tSent in " << attempts << " attempts\n";
-  else
-    os << "\tProject, " << attempts << " attempts so far\n";
-
+std::ostream& operator<<(std::ostream& os, const Climb& climb) {
+  const auto& d = climb.data;
+  os << d.name << " (" << d.grade << ") — " << d.board << "\n";
+  os << climb.sessions.size() << " session(s):\n";
+  for (const auto& s : climb.sessions) {
+    const auto& sd = s.getData();
+    const auto tt = std::chrono::system_clock::to_time_t(sd.timestamp);
+    os << "\t" << std::ctime(&tt);
+    os << "\t" << sd.incline << " degrees, " << sd.attempts << " attempt(s)";
+    os << (sd.sent ? " — Sent" : " — Project") << "\n";
+  }
   return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const ClimbingLog& log) {
-  os << "Climbing Log (" << log.entries.size() << " entries)\n";
-  for (size_t i = 0; i < log.entries.size(); i++) {
-    os << "[" << i << "] (ID " << log.entries[i].getID() << "):\n";
-    os << log.entries[i] << "\n";
+  os << "Climbing Log (" << log.climbs.size() << " climbs)\n";
+  for (size_t i = 0; i < log.climbs.size(); i++) {
+    os << "[" << i << "] (ID " << log.climbs[i].getID() << "):\n";
+    os << log.climbs[i] << "\n";
   }
   return os;
 }
