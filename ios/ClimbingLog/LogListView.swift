@@ -96,9 +96,6 @@ private struct ClimbRowView: View {
     let climb: ClimbViewModel
 
     var body: some View {
-        let sessions = store.sessions(for: climb.id)
-        let everSent = sessions.contains(where: \.sent)
-
         HStack(spacing: 12) {
             Text(climb.grade.displayName)
                 .font(.caption)
