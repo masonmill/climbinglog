@@ -64,7 +64,7 @@ struct LogListView: View {
         List {
             ForEach(store.climbs) { climb in
                 NavigationLink(destination: ClimbDetailView(climb: climb)) {
-                    ClimbRowView(climb: climb, store: store)
+                    ClimbRowView(climb: climb)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
@@ -97,7 +97,6 @@ struct LogListView: View {
 
 private struct ClimbRowView: View {
     let climb: ClimbViewModel
-    let store: ClimbingLogStore
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -116,13 +115,11 @@ private struct ClimbRowView: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 4) {
-                let sessions = store.sessions(for: climb.id)
-                Text("\(sessions.count) session\(sessions.count == 1 ? "" : "s")")
+                Text("\(climb.sessionCount) session\(climb.sessionCount == 1 ? "" : "s")")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                let everSent = sessions.contains(where: \.sent)
-                Image(systemName: everSent ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(everSent ? .green : .secondary)
+                Image(systemName: climb.everSent ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(climb.everSent ? .green : .secondary)
                     .font(.system(size: 16))
             }
         }
