@@ -81,16 +81,35 @@ actor GitHubSyncService {
     enum SyncError: Error, LocalizedError {
         case conflict
         case http(Int)
+        case decodeFailed
 
         var errorDescription: String? {
             switch self {
-            case .conflict:    "SHA conflict — retrying with fresh SHA."
-            case .http(let c): "GitHub API returned HTTP \(c)."
+            case .conflict:      "SHA conflict — retrying with fresh SHA."
+            case .http(let c):   "GitHub API returned HTTP \(c)."
+            case .decodeFailed:  "Failed to decode file content from GitHub."
             }
         }
     }
 
     // ─── Public ───────────────────────────────────────────────────────────────
+
+    /// Downloads the log file from GitHub and returns the raw JSON data.
+    func pull(owner: String, repo: String, token: String) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(for: makeRequest(owner: owner, repo: repo, token: token))
+        let status = (response as! HTTPURLResponse).statusCode
+        guard (200..<300).contains(status),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let sha = json["sha"] as? String,
+              let base64Content = json["content"] as? String else {
+            throw SyncError.http(status)
+        }
+        cachedSHA = sha
+        guard let decoded = Data(base64Encoded: base64Content, options: .ignoreUnknownCharacters) else {
+            throw SyncError.decodeFailed
+        }
+        return decoded
+    }
 
     /// Reads `fileURL` and pushes its contents to GitHub.
     /// On a 409 conflict the SHA cache is refreshed and the push is retried once.

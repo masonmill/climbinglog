@@ -16,6 +16,10 @@ struct ClimbingLogApp: App {
         WindowGroup {
             ContentView()
                 .environment(store)
+                .task {
+                    await store.syncIfNeeded()
+                    await store.pullFromRemote()
+                }
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {

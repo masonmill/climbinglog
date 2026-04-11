@@ -60,8 +60,12 @@ struct SettingsView: View {
             Section {
                 Button("Save") { save() }
                     .disabled(!hasChanges)
-                Button("Sync Now") {
+                Button("Push to GitHub") {
                     Task { await store.sync() }
+                }
+                .disabled(!GitHubConfig.isConfigured || store.syncState == .syncing)
+                Button("Pull from GitHub") {
+                    Task { await store.pullFromRemote() }
                 }
                 .disabled(!GitHubConfig.isConfigured || store.syncState == .syncing)
             }

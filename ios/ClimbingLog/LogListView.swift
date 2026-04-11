@@ -75,20 +75,17 @@ struct LogListView: View {
                 }
             }
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
     }
 
     private var emptyState: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "figure.climbing")
-                .font(.system(size: 52))
-                .foregroundStyle(.secondary)
-            Text("No Climbs")
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text("Tap + to log your first session.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+        ContentUnavailableView {
+            Label("No Climbs", systemImage: "figure.climbing")
+        } description: {
+            Text("Log your first session to get started.")
+        } actions: {
+            Button("Log Session") { showingAddSession = true }
+                .buttonStyle(.borderedProminent)
         }
     }
 }
@@ -100,43 +97,36 @@ private struct ClimbRowView: View {
     let store: ClimbingLogStore
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
+        let sessions = store.sessions(for: climb.id)
+        let everSent = sessions.contains(where: \.sent)
+
+        HStack(spacing: 12) {
+            Text(climb.grade.displayName)
+                .font(.caption)
+                .fontWeight(.semibold)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(climb.grade.color.opacity(0.15))
+                .foregroundStyle(climb.grade.color)
+                .clipShape(Capsule())
+
+            VStack(alignment: .leading, spacing: 2) {
                 Text(climb.name)
                     .font(.body)
                     .fontWeight(.medium)
-                HStack(spacing: 6) {
-                    gradeChip
-                    Text(climb.board.displayName)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text(climb.board.displayName)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Spacer()
 
-            VStack(alignment: .trailing, spacing: 4) {
-                let sessions = store.sessions(for: climb.id)
-                Text("\(sessions.count) session\(sessions.count == 1 ? "" : "s")")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                let everSent = sessions.contains(where: \.sent)
-                Image(systemName: everSent ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(everSent ? .green : .secondary)
-                    .font(.system(size: 16))
+            if everSent {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+                    .font(.system(size: 18))
             }
         }
-        .padding(.vertical, 2)
-    }
-
-    private var gradeChip: some View {
-        Text(climb.grade.displayName)
-            .font(.caption)
-            .fontWeight(.medium)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 2)
-            .background(climb.grade.color.opacity(0.15))
-            .foregroundStyle(climb.grade.color)
-            .clipShape(Capsule())
+        .padding(.vertical, 4)
     }
 }

@@ -66,12 +66,8 @@ struct SessionFormView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Problem") {
-                    if climbLocked {
-                        LabeledContent("Name", value: name)
-                        LabeledContent("Board", value: board.displayName)
-                        LabeledContent("Grade", value: grade.displayName)
-                    } else {
+                if !climbLocked {
+                    Section("Problem") {
                         TextField("Name", text: $name)
                             .onChange(of: name) { _, newValue in
                                 updateSuggestions(for: newValue)
@@ -131,14 +127,14 @@ struct SessionFormView: View {
                     Toggle("Sent", isOn: $sent)
                 }
             }
-            .navigationTitle("Log Session")
+            .navigationTitle("New Session")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { save() }
+                    Button("Log") { save() }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }

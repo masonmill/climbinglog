@@ -14,19 +14,32 @@ struct ClimbDetailView: View {
 
     var body: some View {
         let sessions = store.sessions(for: climb.id)
+        let sentCount = sessions.filter(\.sent).count
 
         List {
-            Section("Problem") {
-                LabeledContent("Name", value: climb.name)
-                LabeledContent("Board", value: climb.board.displayName)
-                LabeledContent("Grade") {
+            Section {
+                HStack(spacing: 12) {
                     Text(climb.grade.displayName)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(climb.grade.color.opacity(0.15))
                         .foregroundStyle(climb.grade.color)
-                        .fontWeight(.medium)
+                        .clipShape(Capsule())
+                    Text(climb.board.displayName)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    if sentCount > 0 {
+                        Text("\(sentCount) send\(sentCount == 1 ? "" : "s")")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                    }
                 }
             }
 
-            Section("Sessions") {
+            Section {
                 if sessions.isEmpty {
                     Text("No sessions yet.")
                         .foregroundStyle(.secondary)
@@ -42,21 +55,21 @@ struct ClimbDetailView: View {
                             }
                     }
                 }
+            } header: {
+                Text("Sessions (\(sessions.count))")
             }
         }
         .navigationTitle(climb.name)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button { showingEditClimb = true } label: {
-                        Label("Edit Climb", systemImage: "pencil")
-                    }
-                    Button { showingAddSession = true } label: {
-                        Label("Add Session", systemImage: "plus")
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
+            ToolbarItem(placement: .primaryAction) {
+                Button { showingAddSession = true } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            ToolbarItem(placement: .secondaryAction) {
+                Button { showingEditClimb = true } label: {
+                    Label("Edit Climb", systemImage: "pencil")
                 }
             }
         }

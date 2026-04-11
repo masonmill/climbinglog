@@ -122,6 +122,24 @@ class ClimbingLogStore {
 
     // ─── Sync ─────────────────────────────────────────────────────────────
 
+    /// Downloads the log from GitHub and replaces local state.
+    func pullFromRemote() async {
+        guard GitHubConfig.isConfigured, let token = GitHubConfig.pat else { return }
+        syncState = .syncing
+        do {
+            let data = try await GitHubSyncService.shared.pull(
+                owner: GitHubConfig.owner, repo: GitHubConfig.repo, token: token
+            )
+            try data.write(to: Self.logFileURL)
+            cl_log_deserialize(handle.ptr, Self.logFileURL.path(percentEncoded: false))
+            refreshClimbs()
+            isDirty = false
+            syncState = .synced(Date())
+        } catch {
+            syncState = .failed(error.localizedDescription)
+        }
+    }
+
     /// Syncs to GitHub only when there are unsaved changes.
     func syncIfNeeded() async {
         guard isDirty else { return }
