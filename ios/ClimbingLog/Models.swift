@@ -65,14 +65,18 @@ struct ClimbViewModel: Identifiable {
     var name: String
     var board: Board
     var grade: Grade
+    var sessionCount: Int
+    var everSent: Bool
 
-    init(from climb: CLClimb) {
+    init(from climb: CLClimb, sessionCount: Int = 0, everSent: Bool = false) {
         id = climb.id
         name = withUnsafeBytes(of: climb.data.name) { raw in
             String(cString: raw.baseAddress!.assumingMemoryBound(to: CChar.self))
         }
         board = Board(climb.data.board)
         grade = Grade(climb.data.grade)
+        self.sessionCount = sessionCount
+        self.everSent = everSent
     }
 }
 

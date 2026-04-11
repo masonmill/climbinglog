@@ -83,6 +83,7 @@ class ClimbingLogStore {
     @discardableResult
     func addSession(climbID: UInt64, data: CLSessionData) -> UInt64 {
         let id = cl_log_add_session(handle.ptr, climbID, data)
+        refreshClimbs()
         serialize()
         isDirty = true
         return id
@@ -90,12 +91,14 @@ class ClimbingLogStore {
 
     func updateSession(climbID: UInt64, sessionID: UInt64, data: CLSessionData) {
         cl_log_set_session(handle.ptr, climbID, sessionID, data)
+        refreshClimbs()
         serialize()
         isDirty = true
     }
 
     func removeSession(climbID: UInt64, sessionID: UInt64) {
         cl_log_remove_session(handle.ptr, climbID, sessionID)
+        refreshClimbs()
         serialize()
         isDirty = true
     }
@@ -159,6 +162,17 @@ class ClimbingLogStore {
         let buffer = UnsafeMutablePointer<CLClimb>.allocate(capacity: count)
         defer { buffer.deallocate() }
         let fetched = cl_log_get_climbs(handle.ptr, 0, count, buffer)
-        climbs = (0..<fetched).map { ClimbViewModel(from: buffer[$0]) }
+        climbs = (0..<fetched).map { i in
+            let climbID = buffer[i].id
+            let sCount = cl_log_session_count(handle.ptr, climbID)
+            var everSent = false
+            if sCount > 0 {
+                let sBuf = UnsafeMutablePointer<CLSession>.allocate(capacity: sCount)
+                defer { sBuf.deallocate() }
+                let sFetched = cl_log_get_sessions(handle.ptr, climbID, 0, sCount, sBuf)
+                everSent = (0..<sFetched).contains { sBuf[$0].data.sent }
+            }
+            return ClimbViewModel(from: buffer[i], sessionCount: sCount, everSent: everSent)
+        }
     }
 }
