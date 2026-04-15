@@ -7,9 +7,11 @@ import SwiftUI
 
 struct ClimbDetailView: View {
     @Environment(ClimbingLogStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
     let climb: ClimbViewModel
     @State private var showingAddSession = false
     @State private var showingEditClimb = false
+    @State private var showingDeleteClimb = false
     @State private var sessionToDelete: SessionViewModel?
 
     var body: some View {
@@ -18,24 +20,10 @@ struct ClimbDetailView: View {
 
         List {
             Section {
-                HStack(spacing: 12) {
-                    Text(climb.grade.displayName)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(climb.grade.color.opacity(0.15))
-                        .foregroundStyle(climb.grade.color)
-                        .clipShape(Capsule())
-                    Text(climb.board.displayName)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    if sentCount > 0 {
-                        Text("\(sentCount) send\(sentCount == 1 ? "" : "s")")
-                            .font(.caption)
-                            .foregroundStyle(.green)
-                    }
+                LabeledContent("Grade", value: climb.grade.displayName)
+                LabeledContent("Board", value: climb.board.displayName)
+                if sentCount > 0 {
+                    LabeledContent("Sends", value: "\(sentCount)")
                 }
             }
 
@@ -72,6 +60,11 @@ struct ClimbDetailView: View {
                     Label("Edit Climb", systemImage: "pencil")
                 }
             }
+            ToolbarItem(placement: .secondaryAction) {
+                Button(role: .destructive) { showingDeleteClimb = true } label: {
+                    Label("Delete Climb", systemImage: "trash")
+                }
+            }
         }
         .sheet(isPresented: $showingAddSession) {
             SessionFormView(store: store, climbID: climb.id, climbName: climb.name,
@@ -95,6 +88,15 @@ struct ClimbDetailView: View {
             }
         } message: {
             Text("Delete this session? This cannot be undone.")
+        }
+        .alert("Delete Climb", isPresented: $showingDeleteClimb) {
+            Button("Delete", role: .destructive) {
+                store.removeClimb(id: climb.id)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Delete \"\(climb.name)\" and all its sessions? This cannot be undone.")
         }
     }
 }

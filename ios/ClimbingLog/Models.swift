@@ -24,6 +24,13 @@ enum Board: Int32, CaseIterable, Hashable {
         case .mb2024: "MoonBoard 2024"
         }
     }
+
+    var shortName: String {
+        switch self {
+        case .mb2019: "MB 2019"
+        case .mb2024: "MB 2024"
+        }
+    }
 }
 
 // ─── Grade ────────────────────────────────────────────────────────────────────
@@ -125,4 +132,58 @@ func makeSessionData(date: Date, attempts: UInt32, incline: Double, sent: Bool) 
     data.incline = incline
     data.sent = sent
     return data
+}
+
+// ─── SessionLabel ─────────────────────────────────────────────────────────────
+
+enum SessionLabel: String {
+    case flash = "Flash"
+    case dayFlash = "Day flash"
+    case sent = "Sent"
+    case `repeat` = "Repeat"
+    case project = "Project"
+
+    var color: Color {
+        switch self {
+        case .flash, .dayFlash, .sent: .green
+        case .repeat: .blue
+        case .project: .secondary
+        }
+    }
+}
+
+/// Computes the send label for a session given its position in chronological order.
+/// `allChronologicalSessions` must be sorted oldest-first.
+func computeSessionLabel(
+    sent: Bool,
+    attempts: UInt32,
+    sessionIndex: Int,
+    allChronologicalSessions: [SessionViewModel]
+) -> SessionLabel {
+    guard sent else { return .project }
+    let previouslySent = allChronologicalSessions.prefix(sessionIndex).contains(where: \.sent)
+    if previouslySent { return .repeat }
+    if attempts == 1 && sessionIndex == 0 { return .flash }
+    if attempts == 1 { return .dayFlash }
+    return .sent
+}
+
+// ─── SessionRow ───────────────────────────────────────────────────────────────
+
+/// A flattened session record enriched with its parent climb's info and a send label.
+/// Used for the date-grouped main list view.
+struct SessionRow: Identifiable {
+    let climbID: UInt64
+    let sessionID: UInt64
+    let climbName: String
+    let board: Board
+    let grade: Grade
+    let date: Date
+    let attempts: UInt32
+    let incline: Double
+    let sent: Bool
+    let label: SessionLabel
+    let sessionCountForClimb: Int
+
+    var id: String { "\(climbID)-\(sessionID)" }
 }

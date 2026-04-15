@@ -32,6 +32,8 @@ private final class LogHandle {
 @MainActor
 class ClimbingLogStore {
     private(set) var climbs: [ClimbViewModel] = []
+    /// Sessions flattened across all climbs, sorted newest-first and grouped by calendar day.
+    private(set) var sessionsByDate: [(dateString: String, rows: [SessionRow])] = []
     private(set) var isDirty = false
     private(set) var syncState: SyncState = .idle
     private let handle = LogHandle()
@@ -123,11 +125,20 @@ class ClimbingLogStore {
         climbs.first { $0.name == name && $0.board == board }
     }
 
+    /// Returns the climb view model for the given id, if it exists.
+    func climb(id: UInt64) -> ClimbViewModel? {
+        climbs.first { $0.id == id }
+    }
+
     // ─── Sync ─────────────────────────────────────────────────────────────
 
     /// Downloads the log from GitHub and replaces local state.
-    func pullFromRemote() async {
+    /// `force: true` skips the dirty-guard (for explicit user-initiated pulls where
+    /// overwriting unpushed local edits is the intent).
+    func pullFromRemote(force: Bool = false) async {
         guard GitHubConfig.isConfigured, let token = GitHubConfig.pat else { return }
+        // Refuse to silently stomp on local changes that haven't been pushed yet.
+        if isDirty && !force { return }
         syncState = .syncing
         do {
             let data = try await GitHubSyncService.shared.pull(
@@ -175,22 +186,96 @@ class ClimbingLogStore {
         let count = cl_log_climb_count(handle.ptr)
         guard count > 0 else {
             climbs = []
+            sessionsByDate = []
             return
         }
         let buffer = UnsafeMutablePointer<CLClimb>.allocate(capacity: count)
         defer { buffer.deallocate() }
         let fetched = cl_log_get_climbs(handle.ptr, 0, count, buffer)
-        climbs = (0..<fetched).map { i in
-            let climbID = buffer[i].id
+
+        var newClimbs: [ClimbViewModel] = []
+        var allRows: [SessionRow] = []
+
+        for i in 0..<fetched {
+            let raw = buffer[i]
+            let climbID = raw.id
+            let board = Board(raw.data.board)
+            let grade = Grade(raw.data.grade)
+            let name = withUnsafeBytes(of: raw.data.name) { bytes in
+                String(cString: bytes.baseAddress!.assumingMemoryBound(to: CChar.self))
+            }
+
             let sCount = cl_log_session_count(handle.ptr, climbID)
             var everSent = false
+
             if sCount > 0 {
                 let sBuf = UnsafeMutablePointer<CLSession>.allocate(capacity: sCount)
                 defer { sBuf.deallocate() }
                 let sFetched = cl_log_get_sessions(handle.ptr, climbID, 0, sCount, sBuf)
-                everSent = (0..<sFetched).contains { sBuf[$0].data.sent }
+
+                // Sort chronologically (oldest first) so send labels are correct.
+                let chronological = (0..<sFetched)
+                    .map { j in SessionViewModel(from: sBuf[j], climbID: climbID) }
+                    .sorted { $0.date < $1.date }
+
+                everSent = chronological.contains(where: \.sent)
+
+                for (idx, session) in chronological.enumerated() {
+                    let label = computeSessionLabel(
+                        sent: session.sent,
+                        attempts: session.attempts,
+                        sessionIndex: idx,
+                        allChronologicalSessions: chronological
+                    )
+                    allRows.append(SessionRow(
+                        climbID: climbID,
+                        sessionID: session.id,
+                        climbName: name,
+                        board: board,
+                        grade: grade,
+                        date: session.date,
+                        attempts: session.attempts,
+                        incline: session.incline,
+                        sent: session.sent,
+                        label: label,
+                        sessionCountForClimb: sFetched
+                    ))
+                }
             }
-            return ClimbViewModel(from: buffer[i], sessionCount: sCount, everSent: everSent)
+
+            newClimbs.append(ClimbViewModel(from: raw, sessionCount: sCount, everSent: everSent))
         }
+
+        climbs = newClimbs
+
+        // Sort all rows newest-first, then bucket by calendar day.
+        allRows.sort { $0.date > $1.date }
+        sessionsByDate = groupByDate(allRows)
+    }
+
+    private func groupByDate(_ rows: [SessionRow]) -> [(dateString: String, rows: [SessionRow])] {
+        var groups: [(dateString: String, rows: [SessionRow])] = []
+        var bucket: [SessionRow] = []
+        var bucketDay: Date? = nil
+        let cal = Calendar.current
+
+        for row in rows {
+            let day = cal.startOfDay(for: row.date)
+            if let current = bucketDay, cal.isDate(day, inSameDayAs: current) {
+                bucket.append(row)
+            } else {
+                if !bucket.isEmpty, let current = bucketDay {
+                    let label = current.formatted(date: .abbreviated, time: .omitted)
+                    groups.append((dateString: label, rows: bucket))
+                }
+                bucketDay = day
+                bucket = [row]
+            }
+        }
+        if !bucket.isEmpty, let current = bucketDay {
+            let label = current.formatted(date: .abbreviated, time: .omitted)
+            groups.append((dateString: label, rows: bucket))
+        }
+        return groups
     }
 }

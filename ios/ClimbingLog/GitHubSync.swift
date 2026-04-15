@@ -80,14 +80,17 @@ actor GitHubSyncService {
 
     enum SyncError: Error, LocalizedError {
         case conflict
-        case http(Int)
+        case http(Int, String?)        // status code + GitHub error message if any
+        case malformedResponse(String) // expected field missing / not parseable
         case decodeFailed
 
         var errorDescription: String? {
             switch self {
-            case .conflict:      "SHA conflict — retrying with fresh SHA."
-            case .http(let c):   "GitHub API returned HTTP \(c)."
-            case .decodeFailed:  "Failed to decode file content from GitHub."
+            case .conflict:                  "SHA conflict — retrying with fresh SHA."
+            case .http(let c, let msg):
+                if let msg, !msg.isEmpty { "HTTP \(c): \(msg)" } else { "HTTP \(c) from GitHub." }
+            case .malformedResponse(let s):  "Malformed GitHub response: \(s)"
+            case .decodeFailed:              "Failed to base64-decode file content from GitHub."
             }
         }
     }
@@ -97,13 +100,21 @@ actor GitHubSyncService {
     /// Downloads the log file from GitHub and returns the raw JSON data.
     func pull(owner: String, repo: String, token: String) async throws -> Data {
         let (data, response) = try await URLSession.shared.data(for: makeRequest(owner: owner, repo: repo, token: token))
-        let status = (response as! HTTPURLResponse).statusCode
-        guard (200..<300).contains(status),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let sha = json["sha"] as? String,
-              let base64Content = json["content"] as? String else {
-            throw SyncError.http(status)
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+
+        guard (200..<300).contains(status) else {
+            throw SyncError.http(status, parseGitHubMessage(data))
         }
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw SyncError.malformedResponse("response was not valid JSON")
+        }
+        guard let sha = json["sha"] as? String else {
+            throw SyncError.malformedResponse("missing 'sha' field")
+        }
+        guard let base64Content = json["content"] as? String else {
+            throw SyncError.malformedResponse("missing 'content' field")
+        }
+
         cachedSHA = sha
         guard let decoded = Data(base64Encoded: base64Content, options: .ignoreUnknownCharacters) else {
             throw SyncError.decodeFailed
@@ -112,7 +123,7 @@ actor GitHubSyncService {
     }
 
     /// Reads `fileURL` and pushes its contents to GitHub.
-    /// On a 409 conflict the SHA cache is refreshed and the push is retried once.
+    /// On a 409 / 422 (stale SHA) the cache is refreshed and the push is retried once.
     /// Config is passed in by the caller so this actor never touches @MainActor state.
     func sync(fileURL: URL, owner: String, repo: String, token: String) async throws {
         let content = try Data(contentsOf: fileURL)
@@ -141,6 +152,8 @@ actor GitHubSyncService {
     private func push(content: Data, sha: String?, owner: String, repo: String, token: String) async throws {
         var req = makeRequest(owner: owner, repo: repo, token: token)
         req.httpMethod = "PUT"
+        // GitHub's Contents API requires this for the JSON body to be parsed.
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         var body: [String: String] = [
             "message": "Update climbing log",
@@ -150,10 +163,13 @@ actor GitHubSyncService {
         req.httpBody = try JSONEncoder().encode(body)
 
         let (data, response) = try await URLSession.shared.data(for: req)
-        let status = (response as! HTTPURLResponse).statusCode
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
 
-        if status == 409 { throw SyncError.conflict }
-        guard (200..<300).contains(status) else { throw SyncError.http(status) }
+        // 409 (conflict) and 422 (validation: stale/missing SHA on existing file) both mean: refresh SHA and retry.
+        if status == 409 || status == 422 { throw SyncError.conflict }
+        guard (200..<300).contains(status) else {
+            throw SyncError.http(status, parseGitHubMessage(data))
+        }
 
         // Cache the new blob SHA from the response so the next push skips a GET.
         if let json   = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -165,13 +181,22 @@ actor GitHubSyncService {
 
     private func fetchSHA(owner: String, repo: String, token: String) async throws -> String {
         let (data, response) = try await URLSession.shared.data(for: makeRequest(owner: owner, repo: repo, token: token))
-        let status = (response as! HTTPURLResponse).statusCode
-        guard (200..<300).contains(status),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard (200..<300).contains(status) else {
+            throw SyncError.http(status, parseGitHubMessage(data))
+        }
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let sha  = json["sha"] as? String else {
-            throw SyncError.http(status)
+            throw SyncError.malformedResponse("missing 'sha' on fetchSHA")
         }
         cachedSHA = sha
         return sha
+    }
+
+    /// Surface GitHub's error.message field so failures aren't just opaque status codes.
+    private func parseGitHubMessage(_ data: Data) -> String? {
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let msg  = json["message"] as? String else { return nil }
+        return msg
     }
 }

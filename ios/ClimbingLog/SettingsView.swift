@@ -65,7 +65,7 @@ struct SettingsView: View {
                 }
                 .disabled(!GitHubConfig.isConfigured || store.syncState == .syncing)
                 Button("Pull from GitHub") {
-                    Task { await store.pullFromRemote() }
+                    Task { await store.pullFromRemote(force: true) }
                 }
                 .disabled(!GitHubConfig.isConfigured || store.syncState == .syncing)
             }
