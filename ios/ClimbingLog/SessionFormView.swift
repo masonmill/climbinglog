@@ -61,7 +61,23 @@ struct SessionFormView: View {
         _isExistingClimb = State(initialValue: false)
     }
 
+    // Editing an existing session on a known climb
+    init(store: ClimbingLogStore, climb: ClimbViewModel, session: SessionViewModel) {
+        self.store = store
+        self.climbID = climb.id
+        self.sessionID = session.id
+        _name = State(initialValue: climb.name)
+        _board = State(initialValue: climb.board)
+        _grade = State(initialValue: climb.grade)
+        _date = State(initialValue: session.date)
+        _attempts = State(initialValue: Int(session.attempts))
+        _incline = State(initialValue: session.incline)
+        _sent = State(initialValue: session.sent)
+        _isExistingClimb = State(initialValue: true)
+    }
+
     private var climbLocked: Bool { climbID != nil }
+    private var isEditing: Bool { sessionID != nil }
 
     var body: some View {
         NavigationStack {
@@ -127,14 +143,14 @@ struct SessionFormView: View {
                     Toggle("Sent", isOn: $sent)
                 }
             }
-            .navigationTitle("New Session")
+            .navigationTitle(isEditing ? "Edit Session" : "New Session")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Log") { save() }
+                    Button(isEditing ? "Save" : "Log") { save() }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
@@ -173,7 +189,9 @@ struct SessionFormView: View {
         let sessionData = makeSessionData(date: date, attempts: UInt32(attempts),
                                            incline: incline, sent: sent)
 
-        if let cid = climbID {
+        if let cid = climbID, let sid = sessionID {
+            store.updateSession(climbID: cid, sessionID: sid, data: sessionData)
+        } else if let cid = climbID {
             // Adding session to a known climb
             store.addSession(climbID: cid, data: sessionData)
         } else if let existing = store.existingClimb(name: name, board: board) {

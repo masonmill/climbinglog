@@ -72,7 +72,9 @@ struct LogListView: View {
                 Section(group.dateString) {
                     ForEach(group.rows) { row in
                         if let climb = store.climb(id: row.climbID) {
-                            NavigationLink(destination: ClimbDetailView(climb: climb)) {
+                            let session = store.sessions(for: row.climbID)
+                                .first { $0.id == row.sessionID }
+                            NavigationLink(destination: ClimbDetailView(climb: climb, focusedSession: session)) {
                                 SessionRowView(row: row)
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {

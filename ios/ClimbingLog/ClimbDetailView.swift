@@ -7,12 +7,29 @@ import SwiftUI
 
 struct ClimbDetailView: View {
     @Environment(ClimbingLogStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
     let climb: ClimbViewModel
-    @State private var showingAddSession = false
-    @State private var showingEditClimb = false
-    @State private var showingDeleteClimb = false
+    // The specific session the user tapped to navigate here (if any).
+    // When set, the toolbar "Edit" action opens that session's edit form
+    // instead of the climb-identity form.
+    var focusedSession: SessionViewModel? = nil
+    @State private var activeSheet: ActiveSheet?
     @State private var sessionToDelete: SessionViewModel?
+
+    // Single sheet dispatcher — multiple .sheet modifiers on the same view
+    // don't fire reliably in SwiftUI, so we funnel all sheets through this.
+    private enum ActiveSheet: Identifiable {
+        case addSession
+        case editClimb
+        case editSession(SessionViewModel)
+
+        var id: String {
+            switch self {
+            case .addSession:              "add"
+            case .editClimb:                "editClimb"
+            case .editSession(let s):       "editSession-\(s.id)"
+            }
+        }
+    }
 
     var body: some View {
         let sessions = store.sessions(for: climb.id)
@@ -33,14 +50,19 @@ struct ClimbDetailView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(sessions) { session in
-                        SessionRowView(session: session)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive) {
-                                    sessionToDelete = session
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
+                        Button {
+                            activeSheet = .editSession(session)
+                        } label: {
+                            SessionRowView(session: session)
+                        }
+                        .buttonStyle(.plain)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                sessionToDelete = session
+                            } label: {
+                                Label("Delete", systemImage: "trash")
                             }
+                        }
                     }
                 }
             } header: {
@@ -51,27 +73,40 @@ struct ClimbDetailView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button { showingAddSession = true } label: {
+                Button { activeSheet = .addSession } label: {
                     Image(systemName: "plus")
                 }
             }
             ToolbarItem(placement: .secondaryAction) {
-                Button { showingEditClimb = true } label: {
-                    Label("Edit Climb", systemImage: "pencil")
+                Button {
+                    if let focused = focusedSession {
+                        activeSheet = .editSession(focused)
+                    } else {
+                        activeSheet = .editClimb
+                    }
+                } label: {
+                    Label(focusedSession != nil ? "Edit Session" : "Edit Climb",
+                          systemImage: "pencil")
                 }
             }
-            ToolbarItem(placement: .secondaryAction) {
-                Button(role: .destructive) { showingDeleteClimb = true } label: {
-                    Label("Delete Climb", systemImage: "trash")
+            if focusedSession != nil {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button { activeSheet = .editClimb } label: {
+                        Label("Edit Climb", systemImage: "square.and.pencil")
+                    }
                 }
             }
         }
-        .sheet(isPresented: $showingAddSession) {
-            SessionFormView(store: store, climbID: climb.id, climbName: climb.name,
-                            board: climb.board, grade: climb.grade)
-        }
-        .sheet(isPresented: $showingEditClimb) {
-            ClimbFormView(store: store, climb: climb)
+        .sheet(item: $activeSheet) { sheet in
+            switch sheet {
+            case .addSession:
+                SessionFormView(store: store, climbID: climb.id, climbName: climb.name,
+                                board: climb.board, grade: climb.grade)
+            case .editClimb:
+                ClimbFormView(store: store, climb: climb)
+            case .editSession(let session):
+                SessionFormView(store: store, climb: climb, session: session)
+            }
         }
         .alert("Delete Session", isPresented: .init(
             get: { sessionToDelete != nil },
@@ -88,15 +123,6 @@ struct ClimbDetailView: View {
             }
         } message: {
             Text("Delete this session? This cannot be undone.")
-        }
-        .alert("Delete Climb", isPresented: $showingDeleteClimb) {
-            Button("Delete", role: .destructive) {
-                store.removeClimb(id: climb.id)
-                dismiss()
-            }
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("Delete \"\(climb.name)\" and all its sessions? This cannot be undone.")
         }
     }
 }
