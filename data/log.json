@@ -1,560 +1,574 @@
 {
-  "nextClimbID": 29,
   "climbs": [
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 27,
       "name": "A Wok to Remember",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1775589480,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1775589480
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 26,
       "name": "Arbor’s Blue Brush",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1775589480,
           "attempts": 4,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1775589480
+        },
+        {
+          "attempts": 5,
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1776299585
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 12,
       "name": "Arthritis",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 3,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770733020,
           "attempts": 4,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1770733020
         },
         {
+          "attempts": 1,
           "id": 1,
-          "timestamp": 1771078680,
-          "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1771078680
         },
         {
-          "id": 2,
-          "timestamp": 1771337940,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 2,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771337940
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 5,
       "name": "Best Ball",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1769523300,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1769523300
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 4,
       "name": "Big Sale",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1769523240,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1769523240
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 17,
       "name": "Biggie Molls",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1771942860,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771942860
         }
       ]
     },
     {
-      "id": 22,
-      "name": "Da Real 6a+",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
+      "id": 22,
+      "name": "Da Real 6a+",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1773148980,
           "attempts": 5,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1773148980
         },
         {
-          "id": 1,
-          "timestamp": 1773753840,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1773753840
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 0,
       "name": "Do It for the Scrunch",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1768918260,
           "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1768918260
         },
         {
-          "id": 1,
-          "timestamp": 1769523240,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1769523240
         }
       ]
     },
     {
-      "id": 16,
-      "name": "Échauffement",
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
-      "nextSessionID": 1,
-      "sessions": [
-        {
-          "id": 0,
-          "timestamp": 1771942800,
-          "attempts": 4,
-          "incline": 40,
-          "sent": true
-        }
-      ]
-    },
-    {
       "id": 6,
       "name": "Entry",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 3,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1769955300,
           "attempts": 5,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1769955300
         },
         {
-          "id": 1,
-          "timestamp": 1770128100,
           "attempts": 2,
-          "incline": 40,
-          "sent": false
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1770128100
         },
         {
-          "id": 2,
-          "timestamp": 1771078680,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 2,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771078680
         }
       ]
     },
     {
-      "id": 14,
-      "name": "Fitbloc Fam 2",
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
+      "id": 14,
+      "name": "Fitbloc Fam 2",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1771510740,
           "attempts": 3,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771510740
         }
       ]
     },
     {
-      "id": 20,
-      "name": "Foundation’s Edge",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
+      "id": 20,
+      "name": "Foundation’s Edge",
       "nextSessionID": 4,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1773148920,
           "attempts": 3,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1773148920
         },
         {
-          "id": 1,
-          "timestamp": 1773753840,
           "attempts": 4,
-          "incline": 40,
-          "sent": false
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1773753840
         },
         {
-          "id": 2,
-          "timestamp": 1774358700,
           "attempts": 2,
-          "incline": 40,
-          "sent": false
+          "id": 2,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1774358700
         },
         {
-          "id": 3,
-          "timestamp": 1774983300,
           "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "id": 3,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1774983300
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 19,
       "name": "Good Morning!",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1772976120,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1772976120
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
       "id": 25,
       "name": "Grip It N Rip It",
-      "board": "MoonBoard 2019",
-      "grade": "6b/V4",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1774983240,
           "attempts": 3,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1774983240
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 8,
       "name": "Jete",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770128160,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1770128160
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 2,
       "name": "Jug Rash",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1769091120,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1769091120
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 3,
       "name": "Kat in the Hat",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1769091180,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1769091180
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 9,
       "name": "Ladders",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770301020,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1770301020
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 11,
       "name": "Magnus Bigtoe",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770733020,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1770733020
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 28,
       "name": "Maple",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1775589540,
           "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1775589540
+        },
+        {
+          "attempts": 4,
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1776299596
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 7,
       "name": "Premiera",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770128160,
           "attempts": 3,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1770128160
         },
         {
-          "id": 1,
-          "timestamp": 1771078680,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771078680
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
       "id": 21,
       "name": "Pugs in a Blanket",
-      "board": "MoonBoard 2019",
-      "grade": "6b/V4",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1773148920,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1773148920
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 15,
       "name": "Q_Q",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1771942800,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771942800
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 18,
       "name": "Sashimi Shiitake",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1772976060,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1772976060
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 13,
       "name": "Simply Simple",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1771337940,
           "attempts": 2,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1771337940
         },
         {
-          "id": 1,
-          "timestamp": 1771510800,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771510800
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 10,
       "name": "Sorry Sam",
-      "board": "MoonBoard 2019",
-      "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1770733020,
           "attempts": 1,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1770733020
         }
       ]
     },
     {
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
       "id": 23,
       "name": "The Scent of the Shore",
-      "board": "MoonBoard 2019",
-      "grade": "6b/V4",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1773753780,
           "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1773753780
         },
         {
-          "id": 1,
-          "timestamp": 1774358700,
           "attempts": 1,
-          "incline": 40,
-          "sent": false
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1774358700
         }
       ]
     },
     {
-      "id": 1,
-      "name": "The Warm Up Problem",
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
+      "id": 1,
+      "name": "The Warm Up Problem",
       "nextSessionID": 1,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1768947000,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1768947000
         }
       ]
     },
     {
-      "id": 24,
-      "name": "Volvo 480",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
+      "id": 24,
+      "name": "Volvo 480",
       "nextSessionID": 2,
       "sessions": [
         {
-          "id": 0,
-          "timestamp": 1774358700,
           "attempts": 2,
-          "incline": 40,
-          "sent": false
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1774358700
         },
         {
-          "id": 1,
-          "timestamp": 1774983300,
           "attempts": 2,
-          "incline": 40,
-          "sent": true
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1774983300
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 16,
+      "name": "Échauffement",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 4,
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1771942800
         }
       ]
     }
-  ]
+  ],
+  "nextClimbID": 29
 }
