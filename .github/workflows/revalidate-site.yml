@@ -1,0 +1,16 @@
+name: Revalidate website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/log.json'
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping revalidate endpoint
+        run: |
+          curl -fsS -X POST \
+            "${{ secrets.REVALIDATE_URL }}?secret=${{ secrets.REVALIDATE_SECRET }}"
