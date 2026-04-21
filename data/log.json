@@ -21,7 +21,7 @@
       "grade": "6a+/V3",
       "id": 26,
       "name": "Arbor’s Blue Brush",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "attempts": 4,
@@ -36,6 +36,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1776213180
+        },
+        {
+          "attempts": 1,
+          "id": 2,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1776790051
         }
       ]
     },
@@ -363,7 +370,7 @@
       "grade": "6a+/V3",
       "id": 28,
       "name": "Maple",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "attempts": 1,
@@ -378,6 +385,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1776213180
+        },
+        {
+          "attempts": 3,
+          "id": 2,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1776790063
         }
       ]
     },
