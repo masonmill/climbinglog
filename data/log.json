@@ -126,6 +126,38 @@
     },
     {
       "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 30,
+      "name": "Comfort Zone",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 1,
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1777397160
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 29,
+      "name": "Custard Speedtalk",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 2,
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1777397160
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
       "grade": "6b/V4",
       "id": 22,
       "name": "Da Real 6a+",
@@ -282,6 +314,22 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1774983240
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 31,
+      "name": "I Sara Ki Mara",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 1,
+          "id": 0,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1777397220
         }
       ]
     },
@@ -584,5 +632,5 @@
       ]
     }
   ],
-  "nextClimbID": 29
+  "nextClimbID": 32
 }
