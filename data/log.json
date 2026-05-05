@@ -158,6 +158,22 @@
     },
     {
       "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 32,
+      "name": "CutLooseOrNot",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 3,
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1777994940
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
       "grade": "6b/V4",
       "id": 22,
       "name": "Da Real 6a+",
@@ -320,6 +336,22 @@
     {
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
+      "id": 34,
+      "name": "Hors D’Oeuvre",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 2,
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1777994994
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
       "id": 31,
       "name": "I Sara Ki Mara",
       "nextSessionID": 1,
@@ -346,6 +378,22 @@
           "incline": 40.0,
           "sent": true,
           "timestamp": 1770128160
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 33,
+      "name": "Johnny Cash 2",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 1,
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1777994967
         }
       ]
     },
@@ -632,5 +680,5 @@
       ]
     }
   ],
-  "nextClimbID": 32
+  "nextClimbID": 35
 }
