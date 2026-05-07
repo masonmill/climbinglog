@@ -610,6 +610,22 @@
     },
     {
       "board": "MoonBoard 2019",
+      "grade": "6a+/V3",
+      "id": 35,
+      "name": "Space Cowboy",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "attempts": 2,
+          "id": 0,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1778161759
+        }
+      ]
+    },
+    {
+      "board": "MoonBoard 2019",
       "grade": "6b/V4",
       "id": 23,
       "name": "The Scent of the Shore",
@@ -687,5 +703,5 @@
       ]
     }
   ],
-  "nextClimbID": 35
+  "nextClimbID": 36
 }
