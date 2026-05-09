@@ -400,7 +400,7 @@
       "grade": "6a+/V3",
       "id": 33,
       "name": "Johnny Cash 2",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "attempts": 1,
@@ -408,6 +408,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1777994967
+        },
+        {
+          "attempts": 2,
+          "id": 1,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1778345503
         }
       ]
     },
