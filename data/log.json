@@ -161,7 +161,7 @@
       "grade": "6a+/V3",
       "id": 32,
       "name": "CutLooseOrNot",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "attempts": 3,
@@ -176,6 +176,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1778161132
+        },
+        {
+          "attempts": 3,
+          "id": 2,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1778344614
         }
       ]
     },
