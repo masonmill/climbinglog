@@ -161,7 +161,7 @@
       "grade": "6a+/V3",
       "id": 32,
       "name": "CutLooseOrNot",
-      "nextSessionID": 3,
+      "nextSessionID": 4,
       "sessions": [
         {
           "attempts": 3,
@@ -183,6 +183,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1778344614
+        },
+        {
+          "attempts": 1,
+          "id": 3,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1778698708
         }
       ]
     },
@@ -400,7 +407,7 @@
       "grade": "6a+/V3",
       "id": 33,
       "name": "Johnny Cash 2",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "attempts": 1,
@@ -415,6 +422,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1778345503
+        },
+        {
+          "attempts": 3,
+          "id": 2,
+          "incline": 40.0,
+          "sent": false,
+          "timestamp": 1778698717
         }
       ]
     },
@@ -627,7 +641,7 @@
       "grade": "6a+/V3",
       "id": 35,
       "name": "Space Cowboy",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "attempts": 2,
@@ -635,6 +649,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1778161759
+        },
+        {
+          "attempts": 2,
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1778698696
         }
       ]
     },
