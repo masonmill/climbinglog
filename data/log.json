@@ -359,7 +359,7 @@
       "grade": "6a+/V3",
       "id": 34,
       "name": "Hors D’Oeuvre",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "attempts": 2,
@@ -367,6 +367,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1777994994
+        },
+        {
+          "attempts": 2,
+          "id": 1,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1780161540
         }
       ]
     },
@@ -407,7 +414,7 @@
       "grade": "6a+/V3",
       "id": 33,
       "name": "Johnny Cash 2",
-      "nextSessionID": 4,
+      "nextSessionID": 5,
       "sessions": [
         {
           "attempts": 1,
@@ -436,6 +443,13 @@
           "incline": 40.0,
           "sent": false,
           "timestamp": 1779383880
+        },
+        {
+          "attempts": 3,
+          "id": 4,
+          "incline": 40.0,
+          "sent": true,
+          "timestamp": 1780161540
         }
       ]
     },
