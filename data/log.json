@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 49,
+  "nextClimbID": 50,
   "climbs": [
     {
       "id": 44,
@@ -45,6 +45,22 @@
           "attempts": 2,
           "incline": 40,
           "sent": true
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Anger Therapy",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1787364595,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false
         }
       ]
     },
