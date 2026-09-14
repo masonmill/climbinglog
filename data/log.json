@@ -27,7 +27,8 @@
           "timestamp": 1784167449,
           "attempts": 4,
           "incline": 40,
-          "sent": true
+          "sent": true,
+          "notes": "All 6a+/V3 Benchmarks complete!"
         }
       ]
     },
