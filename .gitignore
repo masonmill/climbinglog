@@ -1,12 +1,1 @@
-.clang-format
 .DS_Store
-
-# CMake build directories
-cmake-build*/
-
-# nlohmann/json headers copied here by CMake for Xcode consumption
-core/vendor/
-
-# Xcode per-user data (breakpoints, window layout, scheme management)
-xcuserdata/
-*.xcuserstate
