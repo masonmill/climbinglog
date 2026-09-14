@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 54,
+  "nextClimbID": 55,
   "climbs": [
     {
       "id": 44,
@@ -197,6 +197,22 @@
           "id": 0,
           "timestamp": 1771942860,
           "attempts": 1,
+          "incline": 40,
+          "sent": true
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Chicken Locks",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1789352501,
+          "attempts": 6,
           "incline": 40,
           "sent": true
         }
