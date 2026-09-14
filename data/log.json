@@ -6,7 +6,7 @@
       "name": "9Circle",
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "id": 0,
@@ -21,6 +21,13 @@
           "attempts": 3,
           "incline": 40,
           "sent": false
+        },
+        {
+          "id": 2,
+          "timestamp": 1784167449,
+          "attempts": 4,
+          "incline": 40,
+          "sent": true
         }
       ]
     },
