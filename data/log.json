@@ -736,12 +736,19 @@
       "name": "Popped Cherry",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "id": 0,
           "timestamp": 1785722867,
           "attempts": 3,
+          "incline": 40,
+          "sent": false
+        },
+        {
+          "id": 1,
+          "timestamp": 1787364538,
+          "attempts": 1,
           "incline": 40,
           "sent": false
         }
