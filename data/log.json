@@ -337,7 +337,7 @@
       "name": "Foundation’s Edge",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 4,
+      "nextSessionID": 5,
       "sessions": [
         {
           "id": 0,
@@ -364,6 +364,13 @@
           "id": 3,
           "timestamp": 1774983300,
           "attempts": 1,
+          "incline": 40,
+          "sent": false
+        },
+        {
+          "id": 4,
+          "timestamp": 1784167496,
+          "attempts": 2,
           "incline": 40,
           "sent": false
         }
