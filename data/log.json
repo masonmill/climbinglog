@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 50,
+  "nextClimbID": 51,
   "climbs": [
     {
       "id": 44,
@@ -1000,6 +1000,22 @@
           "attempts": 2,
           "incline": 40,
           "sent": true
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Thinkpol",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1787451091,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false
         }
       ]
     },
