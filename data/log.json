@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 52,
+  "nextClimbID": 53,
   "climbs": [
     {
       "id": 44,
@@ -43,6 +43,22 @@
           "id": 0,
           "timestamp": 1775589480,
           "attempts": 2,
+          "incline": 40,
+          "sent": true
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Al 11",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1788401963,
+          "attempts": 3,
           "incline": 40,
           "sent": true
         }
