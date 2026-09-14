@@ -53,11 +53,18 @@
       "name": "Anger Therapy",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "id": 0,
           "timestamp": 1787364595,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false
+        },
+        {
+          "id": 2,
+          "timestamp": 1787451076,
           "attempts": 1,
           "incline": 40,
           "sent": false
