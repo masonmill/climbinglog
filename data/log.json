@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 47,
+  "nextClimbID": 48,
   "climbs": [
     {
       "id": 44,
@@ -728,6 +728,22 @@
           "attempts": 2,
           "incline": 40,
           "sent": true
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Popped Cherry",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1785722867,
+          "attempts": 3,
+          "incline": 40,
+          "sent": false
         }
       ]
     },
