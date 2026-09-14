@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 51,
+  "nextClimbID": 52,
   "climbs": [
     {
       "id": 44,
@@ -275,6 +275,22 @@
           "attempts": 1,
           "incline": 40,
           "sent": true
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "name": "Dayshift",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1787969819,
+          "attempts": 4,
+          "incline": 40,
+          "sent": false
         }
       ]
     },
