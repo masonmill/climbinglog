@@ -751,16 +751,7 @@
       "board": "MoonBoard 2019",
       "grade": "6a+/V3",
       "nextSessionID": 1,
-      "sessions": [
-        {
-          "id": 0,
-          "timestamp": 1789347824,
-          "attempts": 1,
-          "incline": 40,
-          "sent": false,
-          "notes": "Testing"
-        }
-      ]
+      "sessions": []
     },
     {
       "id": 23,
