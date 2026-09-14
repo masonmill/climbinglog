@@ -15,7 +15,7 @@ Data store for a personal climbing log. This repo holds a single file, `data/log
       "grade": "6a+/V3",
       "nextSessionID": 1,
       "sessions": [
-        { "id": 0, "timestamp": 1775589480, "attempts": 2, "incline": 40, "sent": true, "notes": "optional" }
+        { "id": 0, "timestamp": 1775589480, "attempts": 2, "incline": 40, "sent": true, "location": "Planet Rock Ann Arbor", "notes": "optional" }
       ]
     }
   ]
@@ -27,6 +27,8 @@ Data store for a personal climbing log. This repo holds a single file, `data/log
 - `grade` is one of `"6a+/V3"`, `"6b/V4"`, `"6c/V5"`, `"7a/V6"`, `"7a+/V7"`.
 - `timestamp` is Unix epoch seconds.
 - `attempts` is an integer from 1 to 999. `incline` is an integer from 0 to 70. `sent` is a boolean.
+- `location` is required on every session and is one of `"Planet Rock Ann Arbor"`, `"Movement Long Island City"`.
+- Every climb has at least one session; a climb with an empty `sessions` array is invalid.
 - `notes` is optional and left out when empty. When present, it is trimmed, 1-280 characters (Unicode code points), and may contain line breaks. Notes are public.
 - Climb IDs come from `nextClimbID`; session IDs come from the owning climb's `nextSessionID`. Both counters only increase and are never reused, even after deletion.
 - `climbs` are sorted by `name` in code-point order. Each climb's `sessions` are sorted by `timestamp` ascending.
