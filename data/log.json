@@ -398,12 +398,19 @@
       "name": "Grip It N Rip It",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "id": 0,
           "timestamp": 1774983240,
           "attempts": 3,
+          "incline": 40,
+          "sent": false
+        },
+        {
+          "id": 1,
+          "timestamp": 1785031585,
+          "attempts": 5,
           "incline": 40,
           "sent": false
         }
