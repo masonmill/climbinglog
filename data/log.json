@@ -1045,7 +1045,7 @@
       "name": "Thinkpol",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 2,
+      "nextSessionID": 3,
       "sessions": [
         {
           "id": 0,
@@ -1058,6 +1058,13 @@
           "id": 1,
           "timestamp": 1787969800,
           "attempts": 3,
+          "incline": 40,
+          "sent": true
+        },
+        {
+          "id": 2,
+          "timestamp": 1788142649,
+          "attempts": 1,
           "incline": 40,
           "sent": true
         }
