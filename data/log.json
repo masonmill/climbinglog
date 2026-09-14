@@ -805,7 +805,7 @@
       "name": "Popped Cherry",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 7,
+      "nextSessionID": 8,
       "sessions": [
         {
           "id": 0,
@@ -855,6 +855,14 @@
           "attempts": 2,
           "incline": 40,
           "sent": false
+        },
+        {
+          "id": 7,
+          "timestamp": 1789352460,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
+          "notes": "Matching the final pinch at C18 feels quite hard. The gym has also been humid recently."
         }
       ]
     },
