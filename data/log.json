@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 55,
+  "nextClimbID": 56,
   "climbs": [
     {
       "id": 44,
@@ -832,6 +832,24 @@
           "incline": 40,
           "sent": true,
           "location": "Movement Long Island City"
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Nails With 1 Leg",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1789501689,
+          "attempts": 5,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor",
+          "notes": "Very doable, will attempt this first next session."
         }
       ]
     },
