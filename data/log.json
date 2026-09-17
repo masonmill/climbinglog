@@ -840,7 +840,7 @@
       "name": "Nails With 1 Leg",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "id": 0,
@@ -850,6 +850,14 @@
           "sent": false,
           "location": "Planet Rock Ann Arbor",
           "notes": "Very doable, will attempt this first next session."
+        },
+        {
+          "id": 1,
+          "timestamp": 1789668041,
+          "attempts": 1,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
         }
       ]
     },
