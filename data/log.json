@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 56,
+  "nextClimbID": 57,
   "climbs": [
     {
       "id": 44,
@@ -388,6 +388,23 @@
           "id": 2,
           "timestamp": 1789352512,
           "attempts": 1,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Dramatically Warm",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1789668079,
+          "attempts": 2,
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
