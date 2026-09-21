@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 59,
+  "nextClimbID": 60,
   "climbs": [
     {
       "id": 44,
@@ -472,6 +472,23 @@
           "id": 0,
           "timestamp": 1771510740,
           "attempts": 3,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "name": "Flatline",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1789928324,
+          "attempts": 2,
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
