@@ -1135,7 +1135,7 @@
       "name": "Shadow Gao’s Party",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "id": 0,
@@ -1143,6 +1143,14 @@
           "attempts": 4,
           "incline": 40,
           "sent": false,
+          "location": "Planet Rock Ann Arbor"
+        },
+        {
+          "id": 1,
+          "timestamp": 1789928247,
+          "attempts": 1,
+          "incline": 40,
+          "sent": true,
           "location": "Planet Rock Ann Arbor"
         }
       ]
