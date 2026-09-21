@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 58,
+  "nextClimbID": 59,
   "climbs": [
     {
       "id": 44,
@@ -1127,6 +1127,24 @@
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Seventh Seal",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1789928296,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor",
+          "notes": "Felt a bit too humid in the gym to give this one a real go."
         }
       ]
     },
