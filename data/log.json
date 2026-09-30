@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 61,
+  "nextClimbID": 62,
   "climbs": [
     {
       "id": 44,
@@ -557,6 +557,23 @@
           "incline": 40,
           "sent": true,
           "location": "Movement Long Island City"
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "name": "Frowns",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1790533990,
+          "attempts": 2,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
         }
       ]
     },
