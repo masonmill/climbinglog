@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 60,
+  "nextClimbID": 61,
   "climbs": [
     {
       "id": 44,
@@ -906,6 +906,23 @@
           "id": 0,
           "timestamp": 1780430115,
           "attempts": 2,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Over Easy",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1790533966,
+          "attempts": 5,
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
