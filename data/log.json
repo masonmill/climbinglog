@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 62,
+  "nextClimbID": 63,
   "climbs": [
     {
       "id": 44,
@@ -925,6 +925,23 @@
           "attempts": 2,
           "incline": 40,
           "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Nugget Pressure",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1790534009,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
           "location": "Planet Rock Ann Arbor"
         }
       ]
