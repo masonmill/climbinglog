@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 63,
+  "nextClimbID": 64,
   "climbs": [
     {
       "id": 44,
@@ -1286,6 +1286,23 @@
           "attempts": 2,
           "incline": 40,
           "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "name": "Snooze Bottle",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1790742207,
+          "attempts": 2,
+          "incline": 40,
+          "sent": false,
           "location": "Planet Rock Ann Arbor"
         }
       ]
