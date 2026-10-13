@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 69,
+  "nextClimbID": 70,
   "climbs": [
     {
       "id": 44,
@@ -1621,6 +1621,23 @@
           "attempts": 1,
           "incline": 40,
           "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "name": "White Smoke",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1791694217,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
           "location": "Planet Rock Ann Arbor"
         }
       ]
