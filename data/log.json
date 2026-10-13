@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 66,
+  "nextClimbID": 67,
   "climbs": [
     {
       "id": 44,
@@ -780,6 +780,23 @@
           "id": 0,
           "timestamp": 1769091180,
           "attempts": 1,
+          "incline": 40,
+          "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "name": "Kriss Cross",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1791434603,
+          "attempts": 3,
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
