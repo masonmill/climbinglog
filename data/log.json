@@ -1219,7 +1219,7 @@
       "name": "Seventh Seal",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 3,
+      "nextSessionID": 4,
       "sessions": [
         {
           "id": 0,
@@ -1241,6 +1241,14 @@
         {
           "id": 2,
           "timestamp": 1790533942,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor"
+        },
+        {
+          "id": 3,
+          "timestamp": 1791261589,
           "attempts": 1,
           "incline": 40,
           "sent": false,
