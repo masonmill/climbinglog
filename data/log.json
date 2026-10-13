@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 68,
+  "nextClimbID": 69,
   "climbs": [
     {
       "id": 44,
@@ -1393,6 +1393,23 @@
           "id": 3,
           "timestamp": 1791694148,
           "attempts": 3,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "name": "Sorry I Missed the Second",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1791694200,
+          "attempts": 1,
           "incline": 40,
           "sent": false,
           "location": "Planet Rock Ann Arbor"
