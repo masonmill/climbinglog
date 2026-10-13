@@ -1035,7 +1035,7 @@
       "name": "Popped Cherry",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 9,
+      "nextSessionID": 10,
       "sessions": [
         {
           "id": 0,
@@ -1110,6 +1110,14 @@
           "sent": false,
           "location": "Planet Rock Ann Arbor",
           "notes": "I will send this climb even if it takes me 1,000,000 attempts!"
+        },
+        {
+          "id": 9,
+          "timestamp": 1791261577,
+          "attempts": 2,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor"
         }
       ]
     },
