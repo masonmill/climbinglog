@@ -1295,12 +1295,20 @@
       "name": "Snooze Bottle",
       "board": "MoonBoard 2019",
       "grade": "6b/V4",
-      "nextSessionID": 1,
+      "nextSessionID": 2,
       "sessions": [
         {
           "id": 0,
           "timestamp": 1790742207,
           "attempts": 2,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor"
+        },
+        {
+          "id": 1,
+          "timestamp": 1791261561,
+          "attempts": 3,
           "incline": 40,
           "sent": false,
           "location": "Planet Rock Ann Arbor"
