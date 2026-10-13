@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 70,
+  "nextClimbID": 71,
   "climbs": [
     {
       "id": 44,
@@ -1471,6 +1471,23 @@
           "attempts": 2,
           "incline": 40,
           "sent": true,
+          "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "name": "Stormfront",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1791694249,
+          "attempts": 2,
+          "incline": 40,
+          "sent": false,
           "location": "Planet Rock Ann Arbor"
         }
       ]
