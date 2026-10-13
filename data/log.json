@@ -1,5 +1,5 @@
 {
-  "nextClimbID": 67,
+  "nextClimbID": 68,
   "climbs": [
     {
       "id": 44,
@@ -165,6 +165,24 @@
           "incline": 40,
           "sent": true,
           "location": "Planet Rock Ann Arbor"
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "name": "B Moons Reanimated Corpse",
+      "board": "MoonBoard 2019",
+      "grade": "6b/V4",
+      "nextSessionID": 1,
+      "sessions": [
+        {
+          "id": 0,
+          "timestamp": 1791694179,
+          "attempts": 1,
+          "incline": 40,
+          "sent": false,
+          "location": "Planet Rock Ann Arbor",
+          "notes": "Interesting name"
         }
       ]
     },
