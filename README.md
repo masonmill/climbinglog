@@ -23,11 +23,11 @@ Data store for a personal climbing log. This repo holds a single file, `data/log
 ```
 
 - Key order is exactly as shown. `notes` is the last session key.
-- `board` is one of `"MoonBoard 2019"`, `"MoonBoard 2024"`.
-- `grade` is one of `"6a+/V3"`, `"6b/V4"`, `"6c/V5"`, `"7a/V6"`, `"7a+/V7"`.
+- `board` is one of `"MoonBoard 2019"`, `"MoonBoard 2024"`, `"Tension Board 2 Spray"`.
+- `grade` is one of `"6a+/V3"`, `"6b/V4"`, `"6b+/V4"`, `"6c/V5"`, `"6c+/V5"`, `"7a/V6"`, `"7a+/V7"`.
 - `timestamp` is Unix epoch seconds.
 - `attempts` is an integer from 1 to 999. `incline` is an integer from 0 to 70. `sent` is a boolean.
-- `location` is required on every session and is one of `"Planet Rock Ann Arbor"`, `"Movement Long Island City"`.
+- `location` is required on every session and is one of `"Planet Rock Ann Arbor"`, `"Movement Long Island City"`, `"Movement Mountain View"`, `"Movement Sunnyvale"`, `"Movement Santa Clara"`, `"Movement San Francisco"`, `"Dogpatch Boulders"`, `"Hyperion Climbing"`.
 - Every climb has at least one session; a climb with an empty `sessions` array is invalid.
 - `notes` is optional and left out when empty. When present, it is trimmed, 1-280 characters (Unicode code points), and may contain line breaks. Notes are public.
 - Climb IDs come from `nextClimbID`; session IDs come from the owning climb's `nextSessionID`. Both counters only increase and are never reused, even after deletion.
