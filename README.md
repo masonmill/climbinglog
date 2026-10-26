@@ -33,7 +33,7 @@ Data store for a personal climbing log. This repo holds a single file, `data/log
 - Climb IDs come from `nextClimbID`; session IDs come from the owning climb's `nextSessionID`. Both counters only increase and are never reused, even after deletion.
 - `climbs` are sorted by `name` in code-point order. Each climb's `sessions` are sorted by `timestamp` ascending.
 - The file is serialized with 2-space indentation, non-ASCII characters written as-is, and a single trailing newline.
-- A climb is identified by `name` + `board`, compared exactly and case-sensitively. Duplicate name + board pairs are allowed.
+- A climb is identified by `name` + `board` + incline, compared exactly and case-sensitively. The same problem at a different angle can have a different grade, so it is a separate climb; all sessions of a climb share one `incline`. Duplicate name + board + incline triples are allowed.
 
 ## Editing
 
